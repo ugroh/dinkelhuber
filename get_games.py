@@ -15,7 +15,7 @@ def store_a_game(game_id,target_folder):
         return "error"
     if "detail" in r.text:
         return "throttled"
-    with open(os.path.join(target_folder,f"{game_id}.sgf"),"w") as f:
+    with open(os.path.join(target_folder,"{}.sgf".format(game_id)),"w") as f:
         f.write(r.text)
     return "success"
 
@@ -71,7 +71,7 @@ def get_alot_of_games(start_id=60399,game_folder="games",wait=0.1):
     print(already_pids)
     curr_id = start_id
     while True:
-        print(f"storing games from {curr_id}")
+        print("storing games from {}".format(curr_id))
         gids,pids,wait = get_all_game_ids_and_opponents(curr_id,wait=wait)
         gids-=already_gids
         pid_folder = os.path.join(game_folder,str(curr_id))
