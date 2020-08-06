@@ -9,7 +9,7 @@ from tqdm import tqdm
 
 def store_a_game(game_id,target_folder):
     try:
-        r = requests.get(f"https://online-go.com/api/v1/games/{game_id}/sgf")
+        r = requests.get("https://online-go.com/api/v1/games/{}/sgf".format(game_id))
     except requests.exceptions.RequestException as e:
         print("game request failed",e)
         return "error"
@@ -20,7 +20,7 @@ def store_a_game(game_id,target_folder):
     return "success"
 
 def get_all_game_ids_and_opponents(player_id,wait=0.1):
-    url = f"https://online-go.com/api/v1/players/{player_id}/games/?format=json"
+    url = "https://online-go.com/api/v1/players/{}/games/?format=json".format(player_id)
     pids = set()
     gids = set()
     for _ in tqdm(count()):
@@ -40,7 +40,7 @@ def get_all_game_ids_and_opponents(player_id,wait=0.1):
             break
         if "detail" in data and data["detail"]=="Request was throttled.":
             wait*=1.5
-            print(f"player request got throttled, increased wait time to {wait} and retrying in 10 seconds")
+            print("player request got throttled, increased wait time to {} and retrying in 10 seconds".format(wait))
             time.sleep(10)
             continue
         try:
@@ -82,7 +82,7 @@ def get_alot_of_games(start_id=60399,game_folder="games",wait=0.1):
                 result = store_a_game(gid,pid_folder)
                 if result == "throttled":
                     wait*=1.5
-                    print(f"player request got throttled, increased wait time to {wait} and retrying in 10 seconds")
+                    print("player request got throttled, increased wait time to {} and retrying in 10 seconds".format(wait))
                     time.sleep(10)
             time.sleep(wait)
         already_gids.update(gids)
