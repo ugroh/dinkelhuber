@@ -7,10 +7,16 @@
         <canvas id="board_cv" width="800" height="800"></canvas>
     </div>
 <script>
-start = 100
-fin = 700
-move_off = (fin-start)/8
-onturn = false
+const start = 100
+const fin = 700
+const move_off = (fin-start)/8
+const stone_size = 74
+
+var onturn = false
+var stone_black = new Image(stone_size,stone_size)
+stone_black.src = "../images/black_stone.png"
+var stone_white = new Image(stone_size,stone_size)
+stone_white.src = "../images/white_stone.png"
 
 var canvas = document.getElementById("board_cv");
 var ctx = canvas.getContext("2d");
@@ -38,18 +44,14 @@ for (var i in dot_poses) {
     ctx.fill();
 }
 function make_move(move){
+    pos = [start+move_off*(move[0]-1), start+move_off*(move[1]-1)]
     if (onturn){
-        ctx.fillStyle = "#FFFFFF";
+        ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
     }
     else{
-        ctx.fillStyle = "#000000";
+        ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
     }
-    ctx.beginPath();
-    ctx.arc(start+move_off*move[0], start+move_off*move[1], 35, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
     onturn = !onturn;
 }
-make_move([3,4])
 </script>
 </body>
