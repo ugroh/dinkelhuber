@@ -13,7 +13,7 @@ def store_a_game(game_id,target_folder):
     except requests.exceptions.RequestException as e:
         print("game request failed",e)
         return "error"
-    if "detail" in r.text:
+    if "detail" in r.text.splitlines()[0]:
         print(r.text,game_id)
         return "throttled"
     with open(os.path.join(target_folder,"{}.sgf".format(game_id)),"w") as f:
