@@ -1,0 +1,581 @@
+2020-08-09 17:28:19,488 - root - DEBUG - 
+
+
+2020-08-09 17:28:19,492 - root - INFO - extracting from pid: 27750
+2020-08-09 17:28:26,642 - root - INFO - Games extracted: 280, Games failded: 0, Players done: 1, Players left: 10
+2020-08-09 17:28:26,642 - root - INFO - extracting from pid: 737936
+2020-08-09 17:28:27,492 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:27,634 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:27,943 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:28,049 - root - INFO - Games extracted: 330, Games failded: 3, Players done: 2, Players left: 9
+2020-08-09 17:28:28,049 - root - INFO - extracting from pid: 762174
+2020-08-09 17:28:28,814 - root - INFO - Games extracted: 361, Games failded: 3, Players done: 3, Players left: 8
+2020-08-09 17:28:28,814 - root - INFO - extracting from pid: 56400
+2020-08-09 17:28:28,878 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:29,348 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:29,879 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:29,993 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:30,022 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:30,077 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:30,218 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:30,218 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:30,890 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:31,317 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:31,570 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:31,824 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:32,690 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:33,516 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:28:33,516 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:28:33,955 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:34,327 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:34,495 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:34,707 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:35,261 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:35,792 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:36,885 - root - WARNING - Missing info: rating -7, komi 7.5, rules AGA
+2020-08-09 17:28:36,885 - root - WARNING - Missing info: rating -13, komi 7.5, rules AGA
+2020-08-09 17:28:37,224 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:38,121 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:28:38,121 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:28:38,153 - root - WARNING - Missing info: rating -2, komi 7.5, rules AGA
+2020-08-09 17:28:38,153 - root - WARNING - Missing info: rating -8, komi 7.5, rules AGA
+2020-08-09 17:28:39,175 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:39,506 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:28:39,506 - root - WARNING - Missing info: rating -1, komi 7.5, rules AGA
+2020-08-09 17:28:39,507 - root - WARNING - Missing info: rating -9, komi 7.5, rules AGA
+2020-08-09 17:30:09,249 - root - DEBUG - 
+
+
+2020-08-09 17:30:09,253 - root - INFO - extracting from pid: 27750
+2020-08-09 17:30:16,401 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:30:16,401 - root - INFO - extracting from pid: 737936
+2020-08-09 17:30:17,243 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:17,390 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:17,702 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:17,810 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:30:17,810 - root - INFO - extracting from pid: 762174
+2020-08-09 17:30:18,593 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:30:18,593 - root - INFO - extracting from pid: 56400
+2020-08-09 17:30:18,658 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:19,142 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:19,695 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:19,811 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:19,841 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:19,897 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:20,041 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:20,041 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:20,695 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:21,119 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:21,369 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:21,623 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:22,482 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:23,316 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:23,317 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:23,711 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:24,097 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:24,261 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:24,459 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:24,968 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:25,497 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:26,462 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:26,463 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:26,776 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:27,656 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:27,656 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:27,686 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:27,686 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:28,679 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:29,004 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:29,004 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:29,004 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:30:31,355 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:31,420 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:32,563 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:33,088 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:33,552 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:34,038 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:34,976 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:30:34,976 - root - INFO - extracting from pid: 60399
+2020-08-09 17:30:35,147 - root - DEBUG - Invalid game, contains handicap
+2020-08-09 17:30:36,589 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:30:36,589 - root - INFO - extracting from pid: 43936
+2020-08-09 17:30:38,706 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:38,706 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:43,379 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:43,379 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:47,155 - root - WARNING - Missing info: rating -25, komi None, rules Japanese
+2020-08-09 17:30:47,155 - root - WARNING - Missing info: rating 5, komi None, rules Japanese
+2020-08-09 17:30:48,428 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,428 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,446 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,446 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,612 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,613 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,694 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:48,694 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:57,698 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:30:57,698 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:22,175 - root - DEBUG - 
+
+
+2020-08-09 17:33:22,179 - root - INFO - extracting from pid: 27750
+2020-08-09 17:33:29,445 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:33:29,446 - root - INFO - extracting from pid: 737936
+2020-08-09 17:33:30,324 - root - DEBUG - 22258695: Invalid game, contains handicap
+2020-08-09 17:33:30,472 - root - DEBUG - 22320994: Invalid game, contains handicap
+2020-08-09 17:33:30,788 - root - DEBUG - 22258691: Invalid game, contains handicap
+2020-08-09 17:33:30,898 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:33:30,898 - root - INFO - extracting from pid: 762174
+2020-08-09 17:33:31,680 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:33:31,680 - root - INFO - extracting from pid: 56400
+2020-08-09 17:33:31,744 - root - DEBUG - 514831: Invalid game, contains handicap
+2020-08-09 17:33:32,224 - root - DEBUG - 521974: Invalid game, contains handicap
+2020-08-09 17:33:32,776 - root - DEBUG - 6026985: Invalid game, contains handicap
+2020-08-09 17:33:32,894 - root - DEBUG - 619178: Invalid game, contains handicap
+2020-08-09 17:33:32,925 - root - DEBUG - 495372: Invalid game, contains handicap
+2020-08-09 17:33:32,981 - root - DEBUG - 516067: Invalid game, contains handicap
+2020-08-09 17:33:33,123 - root - DEBUG - 496237: Invalid game, contains handicap
+2020-08-09 17:33:33,123 - root - DEBUG - 523112: Invalid game, contains handicap
+2020-08-09 17:33:33,786 - root - DEBUG - 544512: Invalid game, contains handicap
+2020-08-09 17:33:34,233 - root - DEBUG - 6092132: Invalid game, contains handicap
+2020-08-09 17:33:34,491 - root - DEBUG - 532385: Invalid game, contains handicap
+2020-08-09 17:33:34,752 - root - DEBUG - 532726: Invalid game, contains handicap
+2020-08-09 17:33:35,642 - root - DEBUG - 526630: Invalid game, contains handicap
+2020-08-09 17:33:36,562 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:36,562 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:36,977 - root - DEBUG - 521971: Invalid game, contains handicap
+2020-08-09 17:33:37,375 - root - DEBUG - 563715: Invalid game, contains handicap
+2020-08-09 17:33:37,556 - root - DEBUG - 526743: Invalid game, contains handicap
+2020-08-09 17:33:37,764 - root - DEBUG - 514636: Invalid game, contains handicap
+2020-08-09 17:33:38,294 - root - DEBUG - 631296: Invalid game, contains handicap
+2020-08-09 17:33:38,843 - root - DEBUG - 540904: Invalid game, contains handicap
+2020-08-09 17:33:39,847 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:39,848 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:40,202 - root - DEBUG - 521944: Invalid game, contains handicap
+2020-08-09 17:33:41,145 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:41,145 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:41,183 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:41,184 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:42,213 - root - DEBUG - 524716: Invalid game, contains handicap
+2020-08-09 17:33:42,540 - root - DEBUG - 545634: Invalid game, contains handicap
+2020-08-09 17:33:42,540 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:42,540 - root - DEBUG - AGA rules, skipping game
+2020-08-09 17:33:44,978 - root - DEBUG - 6030195: Invalid game, contains handicap
+2020-08-09 17:33:45,034 - root - DEBUG - 526781: Invalid game, contains handicap
+2020-08-09 17:33:46,283 - root - DEBUG - 6052840: Invalid game, contains handicap
+2020-08-09 17:33:46,926 - root - DEBUG - 531374: Invalid game, contains handicap
+2020-08-09 17:33:47,440 - root - DEBUG - 521468: Invalid game, contains handicap
+2020-08-09 17:33:47,979 - root - DEBUG - 536808: Invalid game, contains handicap
+2020-08-09 17:33:49,053 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:33:49,053 - root - INFO - extracting from pid: 60399
+2020-08-09 17:33:49,228 - root - DEBUG - 22810459: Invalid game, contains handicap
+2020-08-09 17:33:50,570 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:33:50,570 - root - INFO - extracting from pid: 43936
+2020-08-09 17:33:52,574 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:52,574 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:57,890 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:33:57,890 - root - DEBUG - Korean rules, skipping game
+2020-08-09 17:34:50,534 - root - DEBUG - 
+
+
+2020-08-09 17:34:50,539 - root - INFO - extracting from pid: 27750
+2020-08-09 17:34:57,800 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:34:57,800 - root - INFO - extracting from pid: 737936
+2020-08-09 17:34:58,657 - root - DEBUG - 22258695: Invalid game, contains handicap
+2020-08-09 17:34:58,800 - root - DEBUG - 22320994: Invalid game, contains handicap
+2020-08-09 17:34:59,107 - root - DEBUG - 22258691: Invalid game, contains handicap
+2020-08-09 17:34:59,217 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:34:59,217 - root - INFO - extracting from pid: 762174
+2020-08-09 17:34:59,999 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:34:59,999 - root - INFO - extracting from pid: 56400
+2020-08-09 17:35:00,074 - root - DEBUG - 514831: Invalid game, contains handicap
+2020-08-09 17:35:00,553 - root - DEBUG - 521974: Invalid game, contains handicap
+2020-08-09 17:35:01,108 - root - DEBUG - 6026985: Invalid game, contains handicap
+2020-08-09 17:35:01,228 - root - DEBUG - 619178: Invalid game, contains handicap
+2020-08-09 17:35:01,264 - root - DEBUG - 495372: Invalid game, contains handicap
+2020-08-09 17:35:01,322 - root - DEBUG - 516067: Invalid game, contains handicap
+2020-08-09 17:35:01,466 - root - DEBUG - 496237: Invalid game, contains handicap
+2020-08-09 17:35:01,466 - root - DEBUG - 523112: Invalid game, contains handicap
+2020-08-09 17:35:02,130 - root - DEBUG - 544512: Invalid game, contains handicap
+2020-08-09 17:35:02,567 - root - DEBUG - 6092132: Invalid game, contains handicap
+2020-08-09 17:35:02,819 - root - DEBUG - 532385: Invalid game, contains handicap
+2020-08-09 17:35:03,100 - root - DEBUG - 532726: Invalid game, contains handicap
+2020-08-09 17:35:04,009 - root - DEBUG - 526630: Invalid game, contains handicap
+2020-08-09 17:35:04,884 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:35:04,884 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:35:05,313 - root - DEBUG - 521971: Invalid game, contains handicap
+2020-08-09 17:35:05,724 - root - DEBUG - 563715: Invalid game, contains handicap
+2020-08-09 17:35:05,896 - root - DEBUG - 526743: Invalid game, contains handicap
+2020-08-09 17:35:06,104 - root - DEBUG - 514636: Invalid game, contains handicap
+2020-08-09 17:35:06,635 - root - DEBUG - 631296: Invalid game, contains handicap
+2020-08-09 17:35:07,179 - root - DEBUG - 540904: Invalid game, contains handicap
+2020-08-09 17:35:08,155 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:35:08,155 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:35:08,465 - root - DEBUG - 521944: Invalid game, contains handicap
+2020-08-09 17:35:09,365 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:35:09,365 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:35:09,396 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:35:09,396 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:35:10,406 - root - DEBUG - 524716: Invalid game, contains handicap
+2020-08-09 17:35:10,736 - root - DEBUG - 545634: Invalid game, contains handicap
+2020-08-09 17:35:10,737 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:35:10,737 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:35:12,979 - root - DEBUG - 6030195: Invalid game, contains handicap
+2020-08-09 17:35:13,053 - root - DEBUG - 526781: Invalid game, contains handicap
+2020-08-09 17:35:14,307 - root - DEBUG - 6052840: Invalid game, contains handicap
+2020-08-09 17:35:14,930 - root - DEBUG - 531374: Invalid game, contains handicap
+2020-08-09 17:35:15,547 - root - DEBUG - 521468: Invalid game, contains handicap
+2020-08-09 17:35:16,095 - root - DEBUG - 536808: Invalid game, contains handicap
+2020-08-09 17:35:17,118 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:35:17,118 - root - INFO - extracting from pid: 60399
+2020-08-09 17:35:17,313 - root - DEBUG - 22810459: Invalid game, contains handicap
+2020-08-09 17:35:18,843 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:35:18,843 - root - INFO - extracting from pid: 43936
+2020-08-09 17:35:21,251 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:35:21,252 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:35:26,977 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:35:26,977 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:35:31,042 - root - WARNING - 9520600: Missing info: rating -25, komi None, rules Japanese
+2020-08-09 17:35:31,042 - root - WARNING - 9520600: Missing info: rating 5, komi None, rules Japanese
+2020-08-09 17:35:32,435 - root - DEBUG - 15112015: Korean rules, skipping game
+2020-08-09 17:35:32,435 - root - DEBUG - 15112015: Korean rules, skipping game
+2020-08-09 17:35:32,456 - root - DEBUG - 11685059: Korean rules, skipping game
+2020-08-09 17:35:32,456 - root - DEBUG - 11685059: Korean rules, skipping game
+2020-08-09 17:35:32,656 - root - DEBUG - 13874869: Korean rules, skipping game
+2020-08-09 17:35:32,656 - root - DEBUG - 13874869: Korean rules, skipping game
+2020-08-09 17:35:32,748 - root - DEBUG - 9647571: Korean rules, skipping game
+2020-08-09 17:35:32,748 - root - DEBUG - 9647571: Korean rules, skipping game
+2020-08-09 17:35:43,126 - root - DEBUG - 25568262: Korean rules, skipping game
+2020-08-09 17:35:43,126 - root - DEBUG - 25568262: Korean rules, skipping game
+2020-08-09 17:35:43,913 - root - DEBUG - 16095472: Invalid game, contains handicap
+2020-08-09 17:35:44,208 - root - DEBUG - 12487232: Korean rules, skipping game
+2020-08-09 17:35:44,209 - root - DEBUG - 12487232: Korean rules, skipping game
+2020-08-09 17:35:44,527 - root - DEBUG - 17875495: Korean rules, skipping game
+2020-08-09 17:35:44,527 - root - DEBUG - 17875495: Korean rules, skipping game
+2020-08-09 17:37:38,627 - root - DEBUG - 
+
+
+2020-08-09 17:37:38,631 - root - INFO - extracting from pid: 27750
+2020-08-09 17:37:45,799 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:37:45,799 - root - INFO - extracting from pid: 737936
+2020-08-09 17:37:46,665 - root - DEBUG - 22258695: Invalid game, contains handicap
+2020-08-09 17:37:46,810 - root - DEBUG - 22320994: Invalid game, contains handicap
+2020-08-09 17:37:47,122 - root - DEBUG - 22258691: Invalid game, contains handicap
+2020-08-09 17:37:47,230 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:37:47,230 - root - INFO - extracting from pid: 762174
+2020-08-09 17:37:48,021 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:37:48,021 - root - INFO - extracting from pid: 56400
+2020-08-09 17:37:48,089 - root - DEBUG - 514831: Invalid game, contains handicap
+2020-08-09 17:37:48,568 - root - DEBUG - 521974: Invalid game, contains handicap
+2020-08-09 17:37:49,128 - root - DEBUG - 6026985: Invalid game, contains handicap
+2020-08-09 17:37:49,252 - root - DEBUG - 619178: Invalid game, contains handicap
+2020-08-09 17:37:49,282 - root - DEBUG - 495372: Invalid game, contains handicap
+2020-08-09 17:37:49,339 - root - DEBUG - 516067: Invalid game, contains handicap
+2020-08-09 17:37:49,483 - root - DEBUG - 496237: Invalid game, contains handicap
+2020-08-09 17:37:49,483 - root - DEBUG - 523112: Invalid game, contains handicap
+2020-08-09 17:37:50,150 - root - DEBUG - 544512: Invalid game, contains handicap
+2020-08-09 17:37:50,572 - root - DEBUG - 6092132: Invalid game, contains handicap
+2020-08-09 17:37:50,821 - root - DEBUG - 532385: Invalid game, contains handicap
+2020-08-09 17:37:51,075 - root - DEBUG - 532726: Invalid game, contains handicap
+2020-08-09 17:37:51,951 - root - DEBUG - 526630: Invalid game, contains handicap
+2020-08-09 17:37:52,787 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:37:52,787 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:37:53,182 - root - DEBUG - 521971: Invalid game, contains handicap
+2020-08-09 17:37:53,566 - root - DEBUG - 563715: Invalid game, contains handicap
+2020-08-09 17:37:53,734 - root - DEBUG - 526743: Invalid game, contains handicap
+2020-08-09 17:37:53,935 - root - DEBUG - 514636: Invalid game, contains handicap
+2020-08-09 17:37:54,456 - root - DEBUG - 631296: Invalid game, contains handicap
+2020-08-09 17:37:54,996 - root - DEBUG - 540904: Invalid game, contains handicap
+2020-08-09 17:37:55,972 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:37:55,972 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:37:56,288 - root - DEBUG - 521944: Invalid game, contains handicap
+2020-08-09 17:37:57,150 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:37:57,150 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:37:57,180 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:37:57,180 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:37:58,162 - root - DEBUG - 524716: Invalid game, contains handicap
+2020-08-09 17:37:58,489 - root - DEBUG - 545634: Invalid game, contains handicap
+2020-08-09 17:37:58,489 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:37:58,489 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:38:00,614 - root - DEBUG - 6030195: Invalid game, contains handicap
+2020-08-09 17:38:00,663 - root - DEBUG - 526781: Invalid game, contains handicap
+2020-08-09 17:38:01,673 - root - DEBUG - 6052840: Invalid game, contains handicap
+2020-08-09 17:38:02,201 - root - DEBUG - 531374: Invalid game, contains handicap
+2020-08-09 17:38:02,665 - root - DEBUG - 521468: Invalid game, contains handicap
+2020-08-09 17:38:03,097 - root - DEBUG - 536808: Invalid game, contains handicap
+2020-08-09 17:38:03,950 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:38:03,950 - root - INFO - extracting from pid: 60399
+2020-08-09 17:38:04,097 - root - DEBUG - 22810459: Invalid game, contains handicap
+2020-08-09 17:38:05,379 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:38:05,379 - root - INFO - extracting from pid: 43936
+2020-08-09 17:38:57,890 - root - DEBUG - 
+
+
+2020-08-09 17:38:57,897 - root - INFO - extracting from pid: 27750
+2020-08-09 17:39:05,154 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:39:05,154 - root - INFO - extracting from pid: 737936
+2020-08-09 17:39:06,018 - root - DEBUG - 22258695: Invalid game, contains handicap
+2020-08-09 17:39:06,165 - root - DEBUG - 22320994: Invalid game, contains handicap
+2020-08-09 17:39:06,476 - root - DEBUG - 22258691: Invalid game, contains handicap
+2020-08-09 17:39:06,586 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:39:06,586 - root - INFO - extracting from pid: 762174
+2020-08-09 17:39:07,378 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:39:07,378 - root - INFO - extracting from pid: 56400
+2020-08-09 17:39:07,448 - root - DEBUG - 514831: Invalid game, contains handicap
+2020-08-09 17:39:07,933 - root - DEBUG - 521974: Invalid game, contains handicap
+2020-08-09 17:39:08,484 - root - DEBUG - 6026985: Invalid game, contains handicap
+2020-08-09 17:39:08,611 - root - DEBUG - 619178: Invalid game, contains handicap
+2020-08-09 17:39:08,641 - root - DEBUG - 495372: Invalid game, contains handicap
+2020-08-09 17:39:08,699 - root - DEBUG - 516067: Invalid game, contains handicap
+2020-08-09 17:39:08,846 - root - DEBUG - 496237: Invalid game, contains handicap
+2020-08-09 17:39:08,846 - root - DEBUG - 523112: Invalid game, contains handicap
+2020-08-09 17:39:09,508 - root - DEBUG - 544512: Invalid game, contains handicap
+2020-08-09 17:39:09,945 - root - DEBUG - 6092132: Invalid game, contains handicap
+2020-08-09 17:39:10,194 - root - DEBUG - 532385: Invalid game, contains handicap
+2020-08-09 17:39:10,451 - root - DEBUG - 532726: Invalid game, contains handicap
+2020-08-09 17:39:11,364 - root - DEBUG - 526630: Invalid game, contains handicap
+2020-08-09 17:39:12,204 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:39:12,204 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:39:12,604 - root - DEBUG - 521971: Invalid game, contains handicap
+2020-08-09 17:39:13,000 - root - DEBUG - 563715: Invalid game, contains handicap
+2020-08-09 17:39:13,170 - root - DEBUG - 526743: Invalid game, contains handicap
+2020-08-09 17:39:13,373 - root - DEBUG - 514636: Invalid game, contains handicap
+2020-08-09 17:39:13,913 - root - DEBUG - 631296: Invalid game, contains handicap
+2020-08-09 17:39:14,456 - root - DEBUG - 540904: Invalid game, contains handicap
+2020-08-09 17:39:15,453 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:39:15,453 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:39:15,771 - root - DEBUG - 521944: Invalid game, contains handicap
+2020-08-09 17:39:16,673 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:39:16,673 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:39:16,703 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:39:16,703 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:39:17,715 - root - DEBUG - 524716: Invalid game, contains handicap
+2020-08-09 17:39:18,037 - root - DEBUG - 545634: Invalid game, contains handicap
+2020-08-09 17:39:18,037 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:39:18,037 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:39:20,171 - root - DEBUG - 6030195: Invalid game, contains handicap
+2020-08-09 17:39:20,221 - root - DEBUG - 526781: Invalid game, contains handicap
+2020-08-09 17:39:21,250 - root - DEBUG - 6052840: Invalid game, contains handicap
+2020-08-09 17:39:21,775 - root - DEBUG - 531374: Invalid game, contains handicap
+2020-08-09 17:39:22,313 - root - DEBUG - 521468: Invalid game, contains handicap
+2020-08-09 17:39:22,884 - root - DEBUG - 536808: Invalid game, contains handicap
+2020-08-09 17:39:23,872 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:39:23,872 - root - INFO - extracting from pid: 60399
+2020-08-09 17:39:24,035 - root - DEBUG - 22810459: Invalid game, contains handicap
+2020-08-09 17:39:25,315 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:39:25,315 - root - INFO - extracting from pid: 43936
+2020-08-09 17:39:27,247 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:39:27,247 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:39:32,358 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:39:32,358 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:39:36,353 - root - DEBUG - 9520600: Zero komi game, skipping
+2020-08-09 17:40:09,455 - root - DEBUG - 
+
+
+2020-08-09 17:40:09,460 - root - INFO - extracting from pid: 27750
+2020-08-09 17:40:16,641 - root - INFO - Games extracted: 280, Games failed: 0, Players done: 1, Players left: 10
+2020-08-09 17:40:16,641 - root - INFO - extracting from pid: 737936
+2020-08-09 17:40:17,506 - root - DEBUG - 22258695: Invalid game, contains handicap
+2020-08-09 17:40:17,653 - root - DEBUG - 22320994: Invalid game, contains handicap
+2020-08-09 17:40:17,970 - root - DEBUG - 22258691: Invalid game, contains handicap
+2020-08-09 17:40:18,080 - root - INFO - Games extracted: 330, Games failed: 3, Players done: 2, Players left: 9
+2020-08-09 17:40:18,080 - root - INFO - extracting from pid: 762174
+2020-08-09 17:40:18,864 - root - INFO - Games extracted: 361, Games failed: 3, Players done: 3, Players left: 8
+2020-08-09 17:40:18,864 - root - INFO - extracting from pid: 56400
+2020-08-09 17:40:18,931 - root - DEBUG - 514831: Invalid game, contains handicap
+2020-08-09 17:40:19,415 - root - DEBUG - 521974: Invalid game, contains handicap
+2020-08-09 17:40:19,963 - root - DEBUG - 6026985: Invalid game, contains handicap
+2020-08-09 17:40:20,092 - root - DEBUG - 619178: Invalid game, contains handicap
+2020-08-09 17:40:20,122 - root - DEBUG - 495372: Invalid game, contains handicap
+2020-08-09 17:40:20,191 - root - DEBUG - 516067: Invalid game, contains handicap
+2020-08-09 17:40:20,333 - root - DEBUG - 496237: Invalid game, contains handicap
+2020-08-09 17:40:20,334 - root - DEBUG - 523112: Invalid game, contains handicap
+2020-08-09 17:40:21,004 - root - DEBUG - 544512: Invalid game, contains handicap
+2020-08-09 17:40:21,429 - root - DEBUG - 6092132: Invalid game, contains handicap
+2020-08-09 17:40:21,689 - root - DEBUG - 532385: Invalid game, contains handicap
+2020-08-09 17:40:21,952 - root - DEBUG - 532726: Invalid game, contains handicap
+2020-08-09 17:40:22,818 - root - DEBUG - 526630: Invalid game, contains handicap
+2020-08-09 17:40:23,644 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:40:23,644 - root - DEBUG - 569168: Korean rules, skipping game
+2020-08-09 17:40:24,042 - root - DEBUG - 521971: Invalid game, contains handicap
+2020-08-09 17:40:24,426 - root - DEBUG - 563715: Invalid game, contains handicap
+2020-08-09 17:40:24,596 - root - DEBUG - 526743: Invalid game, contains handicap
+2020-08-09 17:40:24,796 - root - DEBUG - 514636: Invalid game, contains handicap
+2020-08-09 17:40:25,317 - root - DEBUG - 631296: Invalid game, contains handicap
+2020-08-09 17:40:25,855 - root - DEBUG - 540904: Invalid game, contains handicap
+2020-08-09 17:40:26,838 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:40:26,838 - root - DEBUG - 516057: AGA rules, skipping game
+2020-08-09 17:40:27,153 - root - DEBUG - 521944: Invalid game, contains handicap
+2020-08-09 17:40:28,048 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:40:28,048 - root - DEBUG - 569192: Korean rules, skipping game
+2020-08-09 17:40:28,092 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:40:28,092 - root - DEBUG - 498213: AGA rules, skipping game
+2020-08-09 17:40:29,098 - root - DEBUG - 524716: Invalid game, contains handicap
+2020-08-09 17:40:29,427 - root - DEBUG - 545634: Invalid game, contains handicap
+2020-08-09 17:40:29,427 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:40:29,427 - root - DEBUG - 528350: AGA rules, skipping game
+2020-08-09 17:40:31,729 - root - DEBUG - 6030195: Invalid game, contains handicap
+2020-08-09 17:40:31,797 - root - DEBUG - 526781: Invalid game, contains handicap
+2020-08-09 17:40:32,861 - root - DEBUG - 6052840: Invalid game, contains handicap
+2020-08-09 17:40:33,381 - root - DEBUG - 531374: Invalid game, contains handicap
+2020-08-09 17:40:33,830 - root - DEBUG - 521468: Invalid game, contains handicap
+2020-08-09 17:40:34,263 - root - DEBUG - 536808: Invalid game, contains handicap
+2020-08-09 17:40:35,107 - root - INFO - Games extracted: 998, Games failed: 36, Players done: 4, Players left: 7
+2020-08-09 17:40:35,107 - root - INFO - extracting from pid: 60399
+2020-08-09 17:40:35,250 - root - DEBUG - 22810459: Invalid game, contains handicap
+2020-08-09 17:40:36,506 - root - INFO - Games extracted: 1052, Games failed: 37, Players done: 5, Players left: 6
+2020-08-09 17:40:36,506 - root - INFO - extracting from pid: 43936
+2020-08-09 17:40:38,378 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:40:38,378 - root - DEBUG - 22086297: Korean rules, skipping game
+2020-08-09 17:40:43,071 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:40:43,071 - root - DEBUG - 13261576: Korean rules, skipping game
+2020-08-09 17:40:46,779 - root - DEBUG - 9520600: Zero komi game, skipping
+2020-08-09 17:40:46,779 - root - DEBUG - 9520600: Zero komi game, skipping
+2020-08-09 17:40:47,991 - root - DEBUG - 15112015: Korean rules, skipping game
+2020-08-09 17:40:47,991 - root - DEBUG - 15112015: Korean rules, skipping game
+2020-08-09 17:40:48,009 - root - DEBUG - 11685059: Korean rules, skipping game
+2020-08-09 17:40:48,010 - root - DEBUG - 11685059: Korean rules, skipping game
+2020-08-09 17:40:48,174 - root - DEBUG - 13874869: Korean rules, skipping game
+2020-08-09 17:40:48,174 - root - DEBUG - 13874869: Korean rules, skipping game
+2020-08-09 17:40:48,255 - root - DEBUG - 9647571: Korean rules, skipping game
+2020-08-09 17:40:48,255 - root - DEBUG - 9647571: Korean rules, skipping game
+2020-08-09 17:40:57,034 - root - DEBUG - 25568262: Korean rules, skipping game
+2020-08-09 17:40:57,034 - root - DEBUG - 25568262: Korean rules, skipping game
+2020-08-09 17:40:57,905 - root - DEBUG - 16095472: Invalid game, contains handicap
+2020-08-09 17:40:58,249 - root - DEBUG - 12487232: Korean rules, skipping game
+2020-08-09 17:40:58,249 - root - DEBUG - 12487232: Korean rules, skipping game
+2020-08-09 17:40:58,581 - root - DEBUG - 17875495: Korean rules, skipping game
+2020-08-09 17:40:58,582 - root - DEBUG - 17875495: Korean rules, skipping game
+2020-08-09 17:41:06,095 - root - DEBUG - 10640007: Korean rules, skipping game
+2020-08-09 17:41:06,095 - root - DEBUG - 10640007: Korean rules, skipping game
+2020-08-09 17:41:06,465 - root - DEBUG - 20128195: Korean rules, skipping game
+2020-08-09 17:41:06,465 - root - DEBUG - 20128195: Korean rules, skipping game
+2020-08-09 17:41:07,056 - root - DEBUG - 21035652: Korean rules, skipping game
+2020-08-09 17:41:07,056 - root - DEBUG - 21035652: Korean rules, skipping game
+2020-08-09 17:41:11,566 - root - DEBUG - 24676215: Korean rules, skipping game
+2020-08-09 17:41:11,566 - root - DEBUG - 24676215: Korean rules, skipping game
+2020-08-09 17:41:12,819 - root - DEBUG - 23309565: Korean rules, skipping game
+2020-08-09 17:41:12,820 - root - DEBUG - 23309565: Korean rules, skipping game
+2020-08-09 17:41:14,078 - root - INFO - Games extracted: 2512, Games failed: 53, Players done: 6, Players left: 5
+2020-08-09 17:41:14,079 - root - INFO - extracting from pid: 720023
+2020-08-09 17:41:15,308 - root - DEBUG - 23864880: Invalid game, contains handicap
+2020-08-09 17:41:15,395 - root - DEBUG - 23864550: Invalid game, contains handicap
+2020-08-09 17:41:18,738 - root - INFO - Games extracted: 2709, Games failed: 55, Players done: 7, Players left: 4
+2020-08-09 17:41:18,738 - root - INFO - extracting from pid: 624668
+2020-08-09 17:41:22,531 - root - INFO - Games extracted: 2858, Games failed: 55, Players done: 8, Players left: 3
+2020-08-09 17:41:22,532 - root - INFO - extracting from pid: 483176
+2020-08-09 17:41:23,772 - root - INFO - Games extracted: 2908, Games failed: 55, Players done: 9, Players left: 2
+2020-08-09 17:41:23,772 - root - INFO - extracting from pid: 64817
+2020-08-09 17:41:24,004 - root - DEBUG - 1016066: Zero komi game, skipping
+2020-08-09 17:41:24,004 - root - DEBUG - 1016066: Zero komi game, skipping
+2020-08-09 17:41:24,106 - root - DEBUG - 975439: Zero komi game, skipping
+2020-08-09 17:41:24,106 - root - DEBUG - 975439: Zero komi game, skipping
+2020-08-09 17:41:24,338 - root - DEBUG - 21884187: Invalid game, contains handicap
+2020-08-09 17:41:24,468 - root - DEBUG - 21884081: Invalid game, contains handicap
+2020-08-09 17:41:24,584 - root - DEBUG - 658374: Invalid game, contains handicap
+2020-08-09 17:41:24,860 - root - DEBUG - 1853589: Invalid game, contains handicap
+2020-08-09 17:41:26,852 - root - DEBUG - 1713331: Invalid game, contains handicap
+2020-08-09 17:41:27,142 - root - DEBUG - 2320362: Invalid game, contains handicap
+2020-08-09 17:41:27,423 - root - DEBUG - 1523811: Invalid game, contains handicap
+2020-08-09 17:41:28,330 - root - DEBUG - 1225174: Invalid game, contains handicap
+2020-08-09 17:41:30,891 - root - DEBUG - 2205585: Invalid game, contains handicap
+2020-08-09 17:41:31,252 - root - DEBUG - 1663145: Zero komi game, skipping
+2020-08-09 17:41:31,252 - root - DEBUG - 1663145: Zero komi game, skipping
+2020-08-09 17:41:31,426 - root - DEBUG - 2320360: Invalid game, contains handicap
+2020-08-09 17:41:31,457 - root - DEBUG - 1019453: Invalid game, contains handicap
+2020-08-09 17:41:31,910 - root - DEBUG - 5728678: Korean rules, skipping game
+2020-08-09 17:41:31,910 - root - DEBUG - 5728678: Korean rules, skipping game
+2020-08-09 17:41:32,589 - root - DEBUG - 708444: Zero komi game, skipping
+2020-08-09 17:41:32,589 - root - DEBUG - 708444: Zero komi game, skipping
+2020-08-09 17:41:32,763 - root - DEBUG - 24084960: Invalid game, contains handicap
+2020-08-09 17:41:33,201 - root - DEBUG - 1853587: Invalid game, contains handicap
+2020-08-09 17:41:33,235 - root - DEBUG - 2320358: Invalid game, contains handicap
+2020-08-09 17:41:34,572 - root - DEBUG - 13339908: Invalid game, contains handicap
+2020-08-09 17:41:35,043 - root - DEBUG - 21205172: Zero komi game, skipping
+2020-08-09 17:41:35,044 - root - DEBUG - 21205172: Zero komi game, skipping
+2020-08-09 17:41:35,825 - root - DEBUG - 1058153: Invalid game, contains handicap
+2020-08-09 17:41:36,948 - root - DEBUG - 696307: Invalid game, contains handicap
+2020-08-09 17:41:37,040 - root - DEBUG - 21443994: Invalid game, contains handicap
+2020-08-09 17:41:37,137 - root - DEBUG - 2205589: Invalid game, contains handicap
+2020-08-09 17:41:37,506 - root - DEBUG - 1853591: Invalid game, contains handicap
+2020-08-09 17:41:37,631 - root - DEBUG - 24093442: Invalid game, contains handicap
+2020-08-09 17:41:39,226 - root - DEBUG - 1015810: Invalid game, contains handicap
+2020-08-09 17:41:39,820 - root - DEBUG - 21884014: Invalid game, contains handicap
+2020-08-09 17:41:40,003 - root - DEBUG - 5959451: Invalid game, contains handicap
+2020-08-09 17:41:42,636 - root - DEBUG - 1015941: Invalid game, contains handicap
+2020-08-09 17:41:43,617 - root - DEBUG - 21444078: Invalid game, contains handicap
+2020-08-09 17:41:43,708 - root - DEBUG - 1012358: Zero komi game, skipping
+2020-08-09 17:41:43,708 - root - DEBUG - 1012358: Zero komi game, skipping
+2020-08-09 17:41:43,787 - root - DEBUG - 1523809: Invalid game, contains handicap
+2020-08-09 17:41:44,813 - root - DEBUG - 1019448: Invalid game, contains handicap
+2020-08-09 17:41:44,890 - root - DEBUG - 875288: Invalid game, contains handicap
+2020-08-09 17:41:44,890 - root - DEBUG - 696253: Invalid game, contains handicap
+2020-08-09 17:41:45,850 - root - DEBUG - 623535: Invalid game, contains handicap
+2020-08-09 17:41:46,207 - root - DEBUG - 1853584: Invalid game, contains handicap
+2020-08-09 17:41:47,648 - root - DEBUG - 2205587: Invalid game, contains handicap
+2020-08-09 17:41:48,585 - root - DEBUG - 1058152: Invalid game, contains handicap
+2020-08-09 17:41:48,977 - root - DEBUG - 21443947: Invalid game, contains handicap
+2020-08-09 17:41:49,359 - root - DEBUG - 2040186: Invalid game, contains handicap
+2020-08-09 17:41:49,426 - root - DEBUG - 8934477: Invalid game, contains handicap
+2020-08-09 17:41:49,740 - root - DEBUG - 1295156: Zero komi game, skipping
+2020-08-09 17:41:49,740 - root - DEBUG - 1295156: Zero komi game, skipping
+2020-08-09 17:41:50,085 - root - DEBUG - 1016027: Zero komi game, skipping
+2020-08-09 17:41:50,085 - root - DEBUG - 1016027: Zero komi game, skipping
+2020-08-09 17:41:50,662 - root - DEBUG - 1225172: Invalid game, contains handicap
+2020-08-09 17:41:50,733 - root - DEBUG - 1049660: Zero komi game, skipping
+2020-08-09 17:41:50,733 - root - DEBUG - 1049660: Zero komi game, skipping
+2020-08-09 17:41:52,519 - root - DEBUG - 2040188: Invalid game, contains handicap
+2020-08-09 17:41:53,727 - root - INFO - Games extracted: 3893, Games failed: 104, Players done: 10, Players left: 1
+2020-08-09 17:41:53,727 - root - INFO - Saving
+2020-08-09 17:41:54,016 - root - INFO - extracting from pid: 683279
+2020-08-09 17:41:54,035 - root - DEBUG - 19812163: Invalid game, contains handicap
+2020-08-09 17:41:55,102 - root - DEBUG - 25128565: Invalid game, contains handicap
+2020-08-09 17:41:55,203 - root - DEBUG - 24148606: Invalid game, contains handicap
+2020-08-09 17:41:55,582 - root - DEBUG - 25936703: Invalid game, contains handicap
+2020-08-09 17:41:55,691 - root - DEBUG - 24421879: Invalid game, contains handicap
+2020-08-09 17:41:56,688 - root - DEBUG - 25765953: Invalid game, contains handicap
+2020-08-09 17:41:56,955 - root - DEBUG - 19811856: Invalid game, contains handicap
+2020-08-09 17:41:57,097 - root - DEBUG - 22263417: Invalid game, contains handicap
+2020-08-09 17:41:57,209 - root - DEBUG - 24074110: Invalid game, contains handicap
+2020-08-09 17:41:57,480 - root - DEBUG - 19686920: Invalid game, contains handicap
+2020-08-09 17:41:57,783 - root - DEBUG - 19811555: Invalid game, contains handicap
+2020-08-09 17:41:57,943 - root - DEBUG - 24407060: Invalid game, contains handicap
+2020-08-09 17:41:58,364 - root - DEBUG - 20535290: Invalid game, contains handicap
+2020-08-09 17:41:58,438 - root - DEBUG - 24639273: Invalid game, contains handicap
+2020-08-09 17:41:59,737 - root - DEBUG - 22106480: Invalid game, contains handicap
+2020-08-09 17:41:59,785 - root - DEBUG - 25836513: Invalid game, contains handicap
+2020-08-09 17:42:00,113 - root - DEBUG - 22263603: Invalid game, contains handicap
+2020-08-09 17:42:00,148 - root - DEBUG - 25766067: Invalid game, contains handicap
+2020-08-09 17:42:00,267 - root - DEBUG - 21061161: Invalid game, contains handicap
+2020-08-09 17:42:00,653 - root - DEBUG - 19813451: Invalid game, contains handicap
+2020-08-09 17:42:00,682 - root - DEBUG - 19812442: Invalid game, contains handicap
+2020-08-09 17:42:01,269 - root - DEBUG - 25790889: Invalid game, contains handicap
+2020-08-09 17:42:01,563 - root - DEBUG - 22231554: Invalid game, contains handicap
+2020-08-09 17:42:02,351 - root - DEBUG - 22263640: Invalid game, contains handicap
+2020-08-09 17:42:02,496 - root - DEBUG - 25474217: Invalid game, contains handicap
+2020-08-09 17:42:02,497 - root - DEBUG - 22108453: Invalid game, contains handicap
+2020-08-09 17:42:02,497 - root - DEBUG - 25766027: Invalid game, contains handicap
+2020-08-09 17:42:02,666 - root - DEBUG - 25828012: Invalid game, contains handicap
+2020-08-09 17:42:02,696 - root - DEBUG - 24073912: Invalid game, contains handicap
+2020-08-09 17:42:03,073 - root - DEBUG - 24421854: Invalid game, contains handicap
+2020-08-09 17:42:03,073 - root - DEBUG - 19811425: Invalid game, contains handicap
+2020-08-09 17:42:03,282 - root - DEBUG - 20535163: Invalid game, contains handicap
+2020-08-09 17:42:03,313 - root - DEBUG - 19811351: Invalid game, contains handicap
+2020-08-09 17:42:03,841 - root - DEBUG - 25718848: Invalid game, contains handicap
+2020-08-09 17:42:03,843 - root - DEBUG - 20183675: Invalid game, contains handicap
+2020-08-09 17:42:03,878 - root - DEBUG - 19686907: Invalid game, contains handicap
+2020-08-09 17:42:03,937 - root - DEBUG - 19813355: Invalid game, contains handicap
+2020-08-09 17:42:03,968 - root - DEBUG - 24074298: Invalid game, contains handicap
+2020-08-09 17:42:03,998 - root - DEBUG - 19812519: Invalid game, contains handicap
+2020-08-09 17:42:04,059 - root - DEBUG - 25766105: Invalid game, contains handicap
+2020-08-09 17:42:04,506 - root - DEBUG - 19812376: Invalid game, contains handicap
+2020-08-09 17:42:04,609 - root - DEBUG - 23464337: Invalid game, contains handicap
+2020-08-09 17:42:04,645 - root - DEBUG - 22106834: Invalid game, contains handicap
+2020-08-09 17:42:04,675 - root - DEBUG - 24895536: Invalid game, contains handicap
+2020-08-09 17:42:04,675 - root - DEBUG - 20535193: Invalid game, contains handicap
+2020-08-09 17:42:05,229 - root - DEBUG - 20535104: Invalid game, contains handicap
+2020-08-09 17:42:05,350 - root - DEBUG - 25898114: Invalid game, contains handicap
+2020-08-09 17:42:06,061 - root - DEBUG - 22231524: Invalid game, contains handicap
+2020-08-09 17:42:06,444 - root - DEBUG - 22106646: Invalid game, contains handicap
+2020-08-09 17:42:06,775 - root - DEBUG - 22263672: Invalid game, contains handicap
+2020-08-09 17:42:07,139 - root - INFO - Games extracted: 4380, Games failed: 154, Players done: 11, Players left: 0

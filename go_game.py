@@ -50,8 +50,9 @@ class Go_game():
                 self.position[1][row][col] = True if symbol=="W" else False
 
     def make_move(self,move):
-        self.position[self.onturn][move] = True
-        self.remove_dead_stones(move)
+        if move:
+            self.position[self.onturn][move] = True
+            self.remove_dead_stones(move)
         self.onturn = not self.onturn
     def remove_dead_stones(self,move):
         def check_if_dead(current,alreadys,mycolor):
@@ -116,6 +117,7 @@ class Go_game():
                         out^=self.zobrist[0][row][col]
                     elif pos[1][row][col]:
                         out^=self.zobrist[1][row][col]
+            out^=self.zobrist[2][0][int(self.onturn)]
             return out
         all_pos = self.rotater.apply_all_syms(self.position)
         minhash = np.inf
