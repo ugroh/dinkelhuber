@@ -1,0 +1,37 @@
+<head>
+    <link rel="stylesheet" href="../styles/go.css">
+    <meta charset="utf-8"/>
+</head>
+<body>
+    <div id="go_board">
+        <canvas id="board_cv" width="800" height="800"></canvas>
+    </div>
+<script>
+var canvas = document.getElementById("board_cv");
+var ctx = canvas.getContext("2d");
+ctx.lineStyle = "#000000";
+ctx.font = "bold 35px Arial";
+letters = ["A","B","C","D","E","F","G","H","I"]
+start = 100
+fin = 700
+move = (fin-start)/8
+for (var i = 0; i < 9;i+=1){
+    pos = start+move*i
+    ctx.moveTo(pos, start);
+    ctx.lineTo(pos, fin);
+    ctx.moveTo(start, pos);
+    ctx.lineTo(fin, pos);
+    ctx.fillText(letters[i], pos-10, 50);
+    ctx.fillText(i+1, 30, pos+10);
+}
+ctx.stroke();
+dot_poses = [[2,2],[4,4],[6,2],[2,6],[6,6]]
+for (var i in dot_poses) {
+    dp = dot_poses[i]
+    ctx.fillStyle = "#000000";
+    ctx.beginPath();
+    ctx.arc(start+move*dp[0], start+move*dp[1], 5, 0, 2 * Math.PI);
+    ctx.fill();
+}
+</script>
+</body>

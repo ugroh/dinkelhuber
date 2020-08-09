@@ -14,6 +14,7 @@ def store_a_game(game_id,target_folder):
         print("game request failed",e)
         return "error"
     if "detail" in r.text:
+        print(r.text,game_id)
         return "throttled"
     with open(os.path.join(target_folder,"{}.sgf".format(game_id)),"w") as f:
         f.write(r.text)
@@ -82,7 +83,7 @@ def get_alot_of_games(start_id=60399,game_folder="games",wait=0.1):
                 result = store_a_game(gid,pid_folder)
                 if result == "throttled":
                     wait*=1.5
-                    print("player request got throttled, increased wait time to {} and retrying in 10 seconds".format(wait))
+                    print("game request got throttled, increased wait time to {} and retrying in 10 seconds".format(wait))
                     time.sleep(10)
             time.sleep(wait)
         already_gids.update(gids)

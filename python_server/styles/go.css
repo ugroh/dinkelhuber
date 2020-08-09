@@ -1,0 +1,7 @@
+#go_board{
+    background-image: url("../images/kaya.jpg");
+    position: absolute;
+    top:50px;
+    left:calc(50% - 400px);
+    box-shadow: 0 4px 8px hsla(0,0%,50.2%,.71);
+}
