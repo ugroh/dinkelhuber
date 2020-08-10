@@ -32,7 +32,7 @@ def get_all_game_ids_and_opponents(player_id,wait=0.1):
             r = requests.get(url,timeout=5)
         except requests.exceptions.Timeout as e:
             print("Timeout on request")
-            return "error"
+            break
         except requests.exceptions.RequestException as e:
             print("player request failed",e)
             break
