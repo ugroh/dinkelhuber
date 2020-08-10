@@ -58,10 +58,10 @@ def update_statistics(book,myhash,rating,win):
     if myhash in book:
         entry = book[myhash]
         games = entry[0]+entry[1]
-        entry[2] = (entry[2]+rating/games)/(1+1/games)
-        entry[win=="W"]+=1
+        entry[2] = (entry[2]+rating/(games+1))/(1+1/(games+1))
+        entry[int(win=="W")]+=1
     else:
-        book[myhash] = np.array([win=="B",win=="W",rating],dtype=np.float32)
+        book[myhash] = np.array([int(win=="B"),int(win=="W"),rating],dtype=np.float32)
 
 letter_map = "abcdefghi"
 def convert_move_to_num(move_str):

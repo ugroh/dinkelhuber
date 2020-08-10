@@ -1,4 +1,5 @@
 import numpy as np
+from copy import deepcopy
 
 class Rotater():
     def __init__(self,size):
@@ -37,10 +38,12 @@ class Go_game():
         self.rotater = rotater
         self.zobrist = zobrist
         self.reset()
+        self.hash = hash(self)
+        self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash)]
     def reset(self):
         self.position = [np.zeros((self.size,self.size),dtype=bool),np.zeros((self.size,self.size),dtype=bool)]
         self.onturn = False
-        self.history = []
+        self.hist_index = 0
     def set_pos_from_str(self,strpos):
         strpos = "\n".join([x.strip() for x in strpos.splitlines() if len(x.strip()) > 0])
         strpos = strpos.replace("#","")
@@ -51,18 +54,52 @@ class Go_game():
                 self.position[1][row][col] = True if symbol=="W" else False
 
     def revert_move(self,amount=1):
-        target_index = len(self.history)-amount
-        if target_index < 0:
-            return False
-        self.position, self.onturn = self.history[target_index]
-        self.history = self.history[:target_index]
+        self.hist_index-=amount
+        if self.hist_index < 0:
+            self.hist_index = 0
+        pos, self.onturn, self.hash = self.history[self.hist_index]
+        self.position = [pos[0].copy(),pos[1].copy()]
+
+    def forward(self,amount=1):
+        self.hist_index+=amount
+        if self.hist_index >= len(self.history):
+            self.hist_index = len(self.history)-1
+        pos, self.onturn, self.hash = self.history[self.hist_index]
+        self.position = [pos[0].copy(),pos[1].copy()]
 
     def make_move(self,move):
-        self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn))
         if move:
             self.position[self.onturn][move] = True
             self.remove_dead_stones(move)
         self.onturn = not self.onturn
+        self.hash = hash(self)
+        self.hist_index+=1
+        self.history = self.history[:self.hist_index]
+        self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash))
+
+    def get_legal_moves(self):
+        besetztos = np.logical_or(self.position[0],self.position[1])
+        moves = [tuple()]
+        for x in range(besetztos.shape[0]):
+            for y in range(besetztos.shape[1]):
+                if not besetztos[x,y]:
+                    moves.append((x,y))
+        return moves
+    
+    def get_next_hashes(self):
+        all_prev_hashes = set([x[2] for x in self.history[:self.hist_index]]+[self.hash])
+        moves = self.get_legal_moves()
+        move_with_hash = []
+        save_hist = deepcopy(self.history)
+        for move in moves:
+            self.make_move(move)
+            if not (move and self.hash in all_prev_hashes):
+                all_prev_hashes.add(self.hash)
+                move_with_hash.append((move,self.hash))
+            self.revert_move()
+        self.history = save_hist
+        return move_with_hash
+
     def remove_dead_stones(self,move):
         def check_if_dead(current,alreadys,mycolor):
             alreadys.add(current)
@@ -145,5 +182,5 @@ def play_go(game):
         print(game)
 
 if __name__ == "__main__":
-    game = Go_game()
+    game = Go_game(Rotater(9),np.load("zobrist.npy"))
     play_go(game)

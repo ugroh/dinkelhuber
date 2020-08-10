@@ -112,6 +112,5 @@ def test_symetry():
         print("catch trial success")
     else:
         print("catch trial failed")
-
 if __name__=='__main__':
     test_symetry()
