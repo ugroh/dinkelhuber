@@ -69,7 +69,7 @@ def get_all_game_ids_and_opponents(player_id,wait=0.1):
         time.sleep(wait)
     return gids,pids,wait
 
-def get_alot_of_games(start_id=470505,game_folder="games",wait=0.1):
+def get_alot_of_games(start_id=25584,game_folder="games",wait=0.1):
     os.makedirs(game_folder,exist_ok=True)
     already_gids = set()
     all_pids = set()
