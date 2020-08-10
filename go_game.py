@@ -40,6 +40,7 @@ class Go_game():
     def reset(self):
         self.position = [np.zeros((self.size,self.size),dtype=bool),np.zeros((self.size,self.size),dtype=bool)]
         self.onturn = False
+        self.history = []
     def set_pos_from_str(self,strpos):
         strpos = "\n".join([x.strip() for x in strpos.splitlines() if len(x.strip()) > 0])
         strpos = strpos.replace("#","")
@@ -49,7 +50,15 @@ class Go_game():
                 self.position[0][row][col] = True if symbol=="B" else False
                 self.position[1][row][col] = True if symbol=="W" else False
 
+    def revert_move(self,amount=1):
+        target_index = len(self.history)-amount
+        if target_index < 0:
+            return False
+        self.position, self.onturn = self.history[target_index]
+        self.history = self.history[:target_index]
+
     def make_move(self,move):
+        self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn))
         if move:
             self.position[self.onturn][move] = True
             self.remove_dead_stones(move)

@@ -14,7 +14,8 @@
                 <cg-container>
                    <cg-board>
                     <div id="go_board">
-                        <canvas id="board_cv" width="800" height="800"></canvas>
+                        <canvas id="board_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="stone_cv" class="canvas" width="800" height="800"></canvas>
                     </div>
                    </cg-board>
                 </cg-container>
@@ -25,21 +26,21 @@
           <section class="explorer-box sub-box">
              <div class="overlay"></div>
              <div class="data">
-                <div class="title"><span title="A04 Réti Opening"><strong>A04</strong> Réti Opening</span></div>
+                <div class="title"><span title="Go 9x9 Opening Explorer">Go 9x9 Opening Explorer</span></div>
                 <table class="moves">
                    <thead>
                       <tr>
                          <th class="title">Move</th>
                          <th class="title">Games</th>
-                         <th class="title" style="min-width:10vw">White / Draw / Black</th>
+                         <th class="title" style="min-width:10vw">White / Black win %</th>
                       </tr>
                    </thead>
-                   <tbody data-fen="rnbqkbnr/pppppppp/8/8/8/5N2/PPPPPPPP/RNBQKB1R b KQkq - 1 1">
+                   <tbody id="move-table">
                       <tr data-uci="g8f6" title="Average rating: 2417">
                          <td>Nf6</td>
                          <td>111,709</td>
                          <td>
-                            <div class="bar"><span class="white" style="width: 33.8%">34%</span><span class="draws" style="width: 44.9%">45%</span><span class="black" style="width: 21.3%">21%</span></div>
+                            <div class="bar"><span class="white" style="width: 33.8%">34%</span><span class="black" style="width: 66.2%">66%</span></div>
                          </td>
                       </tr>
                       <tr data-uci="d7d5" title="Average rating: 2426">
@@ -131,47 +132,184 @@ const start = 100
 const fin = 700
 const move_off = (fin-start)/8
 const stone_size = 74
-
-var onturn = false
+var position = [[],[]]
+for (var i = 0; i < 9;i++){
+    position[0].push(new Array(9).fill(false))
+    position[1].push(new Array(9).fill(false))
+}
+var waiting_for_server = false
 var stone_black = new Image(stone_size,stone_size)
 stone_black.src = "../images/black_stone.png"
 var stone_white = new Image(stone_size,stone_size)
 stone_white.src = "../images/white_stone.png"
 
-var canvas = document.getElementById("board_cv");
-var ctx = canvas.getContext("2d");
-ctx.lineStyle = "#000000";
-ctx.fillStyle = "#333333";
-ctx.font = "bold 35px Arial";
+const board_canvas = document.getElementById("board_cv");
+const board_ctx = board_canvas.getContext("2d");
+const stone_canvas = document.getElementById("stone_cv");
+const stone_ctx = stone_canvas.getContext("2d");
+
+board_ctx.lineStyle = "#000000";
+board_ctx.fillStyle = "#333333";
+board_ctx.font = "bold 35px Arial";
 letters = ["A","B","C","D","E","F","G","H","I"]
 for (var i = 0; i < 9;i+=1){
     pos = start+move_off*i
-    ctx.moveTo(pos, start);
-    ctx.lineTo(pos, fin);
-    ctx.moveTo(start, pos);
-    ctx.lineTo(fin, pos);
-    ctx.fillText(letters[i], pos-10, 50);
-    ctx.fillText(9-i, 30, pos+10);
+    board_ctx.moveTo(pos, start);
+    board_ctx.lineTo(pos, fin);
+    board_ctx.moveTo(start, pos);
+    board_ctx.lineTo(fin, pos);
+    board_ctx.fillText(letters[i], pos-10, 50);
+    board_ctx.fillText(9-i, 30, pos+10);
 }
-ctx.stroke();
+board_ctx.stroke();
 dot_poses = [[2,2],[4,4],[6,2],[2,6],[6,6]]
 for (var i in dot_poses) {
     dp = dot_poses[i]
-    ctx.fillStyle = "#000000";
-    ctx.beginPath();
-    ctx.arc(start+move_off*dp[0], start+move_off*dp[1], 5, 0, 2 * Math.PI);
-    ctx.closePath();
-    ctx.fill();
+    board_ctx.fillStyle = "#000000";
+    board_ctx.beginPath();
+    board_ctx.arc(start+move_off*dp[0], start+move_off*dp[1], 5, 0, 2 * Math.PI);
+    board_ctx.closePath();
+    board_ctx.fill();
 }
-function make_move(move){
-    pos = [start+move_off*(move[0]-1), start+move_off*(move[1]-1)]
-    if (onturn){
-        ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+
+function xml_http_post(url, data, callback) {
+    if (waiting_for_server){
+        return
+    }
+    req = new XMLHttpRequest();
+    req.open("POST", url, true);
+    req.onreadystatechange = function() {
+        waiting_for_server=false
+        if (this.readyState == 4) {
+            callback(JSON.parse(this.responseText));
+        }
+    }
+    req.send(JSON.stringify(data));
+    waiting_for_server = true
+}
+
+function transform_into_position(old_pos,new_pos){
+    for (var row = 0; row < 9;row++){
+        for (var col = 0; col < 9;col++){
+            square = [row,col];
+            if (old_pos[0][row][col]){
+                if (!new_pos[0][row][col]){
+                    if (new_pos[1][row][col]){
+                        make_move(square,1)
+                    }
+                    else{
+                        remove_stone([square])
+                    }
+                }
+                continue
+            }
+            else if (old_pos[1][row][col]){
+                if (!new_pos[1][row][col]){
+                    if (new_pos[0][row][col]){
+                        make_move(square,0)
+                    }
+                    else{
+                        remove_stone([square])
+                    }
+                }
+                continue
+            }
+            if (new_pos[0][row][col]){
+                make_move(square,0)
+            }
+            else if (new_pos[1][row][col]){
+                make_move(square,1)
+            }
+        }
+    }
+}
+
+function handle_server_data(data){
+    set_aval_moves(data["moves"])
+    transform_into_position(position,data["position"])
+    position = data["position"]
+}
+
+stone_canvas.addEventListener("mousedown",function(e){
+  var orig_width = parseInt(this.getAttribute("width"))
+  var rect = e.target.getBoundingClientRect();
+  var rescalo = orig_width/rect.width
+  var x = (e.clientX - rect.left)*rescalo-start;
+  var y = (e.clientY - rect.top)*rescalo-start;
+  var row = parseInt((x+move_off/2)/move_off);
+  var column = parseInt((y+move_off/2)/move_off);
+  if (row<0||row>8||column<0||column>8||position[0][row][column]||position[1][row][column]){
+    console.log("Failed stone placement")
+    return
+  }
+  xml_http_post("html/go.html",{"move":[row,column]},handle_server_data)
+})
+
+function convert_human_readable(move){
+    move_letters = "ABCDEFGHI"
+    return move_letters[move[0]]+move[1]
+}
+function convert_rating_readable(rating){
+    if (rating<0){
+        return (-rating)+" kyu"
     }
     else{
-        ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+        return rating+" dan"
     }
-    onturn = !onturn;
+}
+
+function set_aval_moves(moves){
+    var tbody = document.getElementById("move-table");
+    tbody.innerHTML = ""
+    for (var i = 0; i < moves.length;i++){
+        let move_info = moves[i];
+        let game_amount = move_info["black_wins"]+move_info["white_wins"]
+        let white_percent = Math.round((move_info["white_wins"]/game_amount)*1000)/10
+        let black_percent = Math.round((move_info["black_wins"]/game_amount)*1000)/10
+        let row = document.createElement("tr");
+        row.setAttribute("title","Average rating: "+convert_rating_readable(move_info["rating"]))
+        row.setAttribute("data-uci",move_info["move"][0]+","+move_info["move"][1])
+        row.addEventListener("mousedown",function(e){
+            move = this.getAttribute("data-uci").split(",")
+            xml_http_post("html/go.html",{"move":move},handle_server_data)
+        })
+        tbody.appendChild(row)
+        let move_td = document.createElement("td")
+        move_td.innerText = convert_human_readable(move_info[0])
+        row.appendChild(move_td)
+        let games_td = document.createElement("td")
+        games_td.innerText = game_amount
+        row.appendChild(games_td)
+        let bar_td = document.createElement("td")
+        row.appendChild(bar_td)
+        let bar_div = document.createElement("div")
+        bar_div.setAttribute("class","bar")
+        bar_td.appendChild(bar_div)
+        let white_span = document.createElement("span")
+        white_span.setAttribute("class","white")
+        white_span.setAttribute("style","width: "+white_percent+"%")
+        white_span.innerText = Math.round(white_percent)+"%"
+        let black_span = document.createElement("span")
+        black_span.setAttribute("class","black")
+        black_span.setAttribute("style","width: "+black_percent+"%")
+        black_span.innerText = Math.round(black_percent)+"%"
+        bar_div.appendChild(white_span)
+        bar_div.appendChild(black_span)
+    }
+}
+function make_move(move,color){
+    pos = [start+move_off*(move[0]), start+move_off*(move[1])]
+    if (color){
+        stone_ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+    }
+    else{
+        stone_ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+    }
+    position[color][move[0]][move[1]] = true
+}
+function remove_stone(square){
+    pos = [start+move_off*(square[0]), start+move_off*(square[1])]
+    stone_ctx.clearRect(pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
 }
 </script>
 </body>
