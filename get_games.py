@@ -9,7 +9,10 @@ from tqdm import tqdm
 
 def store_a_game(game_id,target_folder):
     try:
-        r = requests.get("https://online-go.com/api/v1/games/{}/sgf".format(game_id))
+        r = requests.get("https://online-go.com/api/v1/games/{}/sgf".format(game_id), timeout=5)
+    except requests.exceptions.Timeout as e:
+        print("Timeout on request")
+        return "error"
     except requests.exceptions.RequestException as e:
         print("game request failed",e)
         return "error"
@@ -26,7 +29,10 @@ def get_all_game_ids_and_opponents(player_id,wait=0.1):
     gids = set()
     for _ in tqdm(count()):
         try:
-            r = requests.get(url)
+            r = requests.get(url,timeout=5)
+        except requests.exceptions.Timeout as e:
+            print("Timeout on request")
+            return "error"
         except requests.exceptions.RequestException as e:
             print("player request failed",e)
             break
@@ -63,7 +69,7 @@ def get_all_game_ids_and_opponents(player_id,wait=0.1):
         time.sleep(wait)
     return gids,pids,wait
 
-def get_alot_of_games(start_id=60399,game_folder="games",wait=0.1):
+def get_alot_of_games(start_id=470505,game_folder="games",wait=0.1):
     os.makedirs(game_folder,exist_ok=True)
     already_gids = set()
     all_pids = set()
