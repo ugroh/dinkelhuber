@@ -32,28 +32,36 @@ class Post_handler(SimpleHTTPRequestHandler):
             super().do_GET()
 
     def do_POST(self):
+        global settings
         # read the message and convert it into a python dictionary
         length = int(self.headers['Content-Length'])
         data = json.loads(self.rfile.read(length))
         print(data)
-        if "revert" in data:
-            print("before_revert",len(game.history))
-            game.revert_move(data["revert"])
-            print("after_revert",len(game.history))
-        elif "forward" in data:
-            game.forward(data["forward"])
-        elif "move" in data:
-            print("before_move",len(game.history))
-            game.make_move(tuple(data["move"]))
-            print("after_move",len(game.history))
-        moves_with_hash = game.get_next_hashes()
-        moves_with_data = book_handler.lookup_games(moves_with_hash)
-        moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
-        print(game)
-        return_data = {
-            "position": [x.tolist() for x in game.position],
-            "moves": moves_with_data
-        }
+        if "request" in data:
+            if data["request"] == "settings":
+                return_data = {"settings":settings}
+        else:
+            if "revert" in data:
+                print("before_revert",len(game.history))
+                game.revert_move(data["revert"])
+                print("after_revert",len(game.history))
+            elif "forward" in data:
+                game.forward(data["forward"])
+            elif "move" in data:
+                print("before_move",len(game.history))
+                game.make_move(tuple(data["move"]))
+                print("after_move",len(game.history))
+            if "settings" in data:
+                settings = data["settings"]
+                book_handler.change_settings(settings)
+            moves_with_hash = game.get_next_hashes()
+            moves_with_data = book_handler.lookup_games(moves_with_hash)
+            moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
+            print(game)
+            return_data = {
+                "position": [x.tolist() for x in game.position],
+                "moves": moves_with_data
+            }
         # send the message back
         self._set_headers()
         self.wfile.write(json.dumps(return_data).encode())
@@ -73,7 +81,7 @@ def start_server():
 
 if __name__ == '__main__':
     FILE = "html/go.html"
-    PORT = 8080
+    PORT = 6001
     settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese","Chinese"]]
     with open("../book.pkl","rb") as f:
         book = pickle.load(f)

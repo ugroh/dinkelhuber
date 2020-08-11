@@ -355,3 +355,21 @@ html {
    .explorer-box .bar span:last-child {
     border-right-width:1px
    }
+   .explorer-box .toconf {
+    position: absolute;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    display: block;
+    font-size: 1.2em;
+    width: 1.5em;
+    line-height: 1.5em;
+    text-align: center;
+    opacity: 0.8;
+    }
+    .explorer-box .toconf:hover {
+        opacity: 1;
+    }
+    .explorer-box .config .choices span:hover {
+        background: #fff;
+    }

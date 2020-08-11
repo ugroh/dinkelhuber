@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="../styles/explorer_box.css">
     <link rel="stylesheet" href="../styles/new_try_css.css">
     <meta charset="utf-8"/>
+    <title>Go 9x9 Opening Explorer</title>
 </head>
 <body>
     
@@ -43,21 +44,8 @@
           </div>
        </div>
        <div class="analyse__tools">
-          <section class="explorer-box sub-box">
-             <div class="data">
-                <div class="title"><span title="Go 9x9 Opening Explorer">Go 9x9 Opening Explorer</span></div>
-                <table class="moves">
-                   <thead>
-                      <tr>
-                         <th class="title">Move</th>
-                         <th class="title">Games</th>
-                         <th class="title" style="min-width:10vw">White / Black win %</th>
-                      </tr>
-                   </thead>
-                   <tbody id="move-table">
-                   </tbody>
-                </table>
-             </div>
+          <section id="explorer-box" class="explorer-box sub-box">
+            
           </section>
        </div>
     </main>
@@ -77,22 +65,59 @@ const explorer_html = `
                    <tbody id="move-table">
                    </tbody>
                 </table>
-             </div>
+            </div>
+            <span class="toconf" data-icon="⚙️" onmousedown="go_config_mode()"></span>
 `
-const start = 100
-const fin = 700
-const move_off = (fin-start)/8
-const stone_size = 74
-var position = [[],[]]
+const config_html = 
+`
+            <div class="config">
+                <div class="title">Go 9x9 Opening Explorer</div>
+                <section class="db">
+                    <label>Player Strength</label>
+                    <div class="choices" id="select_0">
+                        <span id="kyu" onmousedown="select_setting(this,0,'kyu')">Kyu</span>
+                        <span id="dan" onmousedown="select_setting(this,0,'dan')">Dan</span>
+                    </div>
+                </section>
+                <div>
+                    <section class="rating">
+                        <label>Komi</label>
+                        <div class="choices" id="select_1">
+                            <span id="lower" onmousedown="select_setting(this,1,'lower')">&lt; 5.5</span>
+                            <span id="5.5" onmousedown="select_setting(this,1,'5.5')">5.5</span>
+                            <span id="higher" onmousedown="select_setting(this,1,'higher')">&gt; 5.5</span></div>
+                    </section>
+                    <section class="speed">
+                        <label>Rules</label>
+                        <div class="choices" id="select_2">
+                            <span id="Japanese" onmousedown="select_setting(this,2,'Japanese')">Japanese</span>
+                            <span id="Chinese" onmousedown="select_setting(this,2,'Chinese')">Chinese</span>
+                        </div>
+                    </section>
+                </div>
+                <section class="save"><button onclick="send_settings()" class="button button-green text" data-icon="✓">All set!</button></section>
+            </div>
+            <span class="toconf" data-icon="✖" onmousedown="send_settings()"></span>
+`
+
+const start = 100;
+const fin = 700;
+const move_off = (fin-start)/8;
+const stone_size = 74;
+var mode = "explorer";
+var settings_changed = false
+var settings = [['kyu','dan'],['lower','5.5','higher'],["Japanese","Chinese"]];
+
+var position = [[],[]];
 for (var i = 0; i < 9;i++){
-    position[0].push(new Array(9).fill(false))
-    position[1].push(new Array(9).fill(false))
+    position[0].push(new Array(9).fill(false));
+    position[1].push(new Array(9).fill(false));
 }
-var waiting_for_server = false
-var stone_black = new Image(stone_size,stone_size)
-stone_black.src = "../images/black_stone.png"
-var stone_white = new Image(stone_size,stone_size)
-stone_white.src = "../images/white_stone.png"
+var waiting_for_server = false;
+var stone_black = new Image(stone_size,stone_size);
+stone_black.src = "../images/black_stone.png";
+var stone_white = new Image(stone_size,stone_size);
+stone_white.src = "../images/white_stone.png";
 
 const board_canvas = document.getElementById("board_cv");
 const board_ctx = board_canvas.getContext("2d");
@@ -121,6 +146,48 @@ for (var i in dot_poses) {
     board_ctx.arc(start+move_off*dp[0], start+move_off*dp[1], 5, 0, 2 * Math.PI);
     board_ctx.closePath();
     board_ctx.fill();
+}
+
+function go_config_mode(){
+    xml_http_post("html/go.html",{"request":"settings"},handle_server_data)
+}
+
+function send_settings(){
+    mode = "explorer"
+    document.getElementById("explorer-box").innerHTML = explorer_html
+    xml_http_post("html/go.html",(settings_changed?{"settings":settings}:{}),handle_server_data)
+}
+
+function show_selected_settings(settings){
+    for (var i = 0; i < settings.length;i++){
+        choices = document.getElementById("select_"+i).children
+        for (var j = 0; j < choices.length;j++){
+            choice = choices[j]
+            if (settings[i].includes(choice.id)){
+                choice.setAttribute("class","selected")
+            }
+            else{
+                choice.setAttribute("class","")
+            }
+        }
+    }
+}
+
+function select_setting(elem,layer,val){
+    var myindex = settings[layer].indexOf(val)
+    if (myindex>=0){
+        if (settings[layer].length==1){
+            return
+        }
+        elem.setAttribute("class", "");
+        settings[layer].splice(myindex,1)
+        settings_changed = true;
+    }
+    else{
+        settings[layer].push(val)
+        elem.setAttribute("class", "selected");
+        settings_changed = true;
+    }
 }
 
 function send_message(key,value){
@@ -182,6 +249,14 @@ function transform_into_position(old_pos,new_pos){
 }
 
 function handle_server_data(data){
+    if ("settings" in data){
+        settings = data["settings"];
+        mode = "config";
+        settings_changed = false;
+        document.getElementById("explorer-box").innerHTML = config_html;
+        show_selected_settings(settings);
+        return
+    }
     set_aval_moves(data["moves"])
     transform_into_position(position,data["position"])
     position = data["position"]
@@ -228,6 +303,9 @@ function convert_rating_readable(rating){
 }
 
 function set_aval_moves(moves){
+    if (mode!="explorer"){
+        return
+    }
     var tbody = document.getElementById("move-table");
     tbody.innerHTML = ""
     for (var i = 0; i < moves.length;i++){
@@ -286,5 +364,7 @@ function remove_stone(square){
 }
 
 xml_http_post("html/go.html",{},handle_server_data)
+mode = "explorer"
+document.getElementById("explorer-box").innerHTML = explorer_html
 </script>
 </body>

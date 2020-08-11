@@ -69,7 +69,7 @@ def convert_move_to_num(move_str):
         return tuple()
     return letter_map.index(move_str[0]), letter_map.index(move_str[1])
 
-def extract_a_game(game,filepath,book,gid,max_half_moves=30):
+def extract_a_game(game,filepath,book,gid,max_half_moves=20):
     def extract_val(line):
         return line.split("[")[1].split("]")[0]
     game.reset()
@@ -78,8 +78,7 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=30):
     komi = None
     rules = None
     winner = None
-    blackbook = None
-    whitebook = None
+    usebook = None
     cur_move = 0
     with open(filepath,'r') as f:
         lines = f.read().splitlines()
@@ -104,29 +103,20 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=30):
             komi = float(extract_val(line))
         elif line.startswith("RU"):
             rules = extract_val(line)
-        elif blackbook is None and line.startswith(";B"):
+        elif usebook is None and line.startswith(";B"):
             if winner is None:
                 logger.warn("{}: Missing winner info, {}".format(gid,winner))
                 return False
-            blackbook = select_book(book,black_rating,komi,rules,gid)
-            whitebook = select_book(book,white_rating,komi,rules,gid)
-            if blackbook is None or whitebook is None:
+            usebook = select_book(book,(black_rating+white_rating)/2,komi,rules,gid)
+            if usebook is None:
                 return False
-        if line.startswith(";B") or line.startswith("(;B"):
+        if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
             move = convert_move_to_num(extract_val(line))
             game.make_move(move)
-            if blackbook is None:
-                logger.warn("{}: blackbook is None, {}".format(gid,line))
+            if usebook is None:
+                logger.warn("{}: usebook is None, {}".format(gid,line))
                 return False
-            update_statistics(blackbook,hash(game),black_rating,winner)
-            cur_move+=1
-        if line.startswith(";W") or line.startswith("(;W"):
-            move = convert_move_to_num(extract_val(line))
-            game.make_move(move)
-            if whitebook is None:
-                logger.warn("{}: whitebook is None, {}".format(gid,line))
-                return False
-            update_statistics(whitebook,hash(game),white_rating,winner)
+            update_statistics(usebook,hash(game),black_rating if (line.startswith(";B") or line.startswith("(;B")) else white_rating,winner)
             cur_move+=1
         if cur_move>=max_half_moves:
             break
