@@ -12,6 +12,7 @@ from urllib.parse import parse_qs
 class Stuff_handler():
     def __init__(self):
         self.ending_to_content_type = {
+            "/":"text/html",
             "html": "text/html",
             "css": "text/css",
             "png": "image/png",
