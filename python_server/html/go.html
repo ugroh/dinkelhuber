@@ -209,6 +209,7 @@ function xml_http_post(url, data, callback) {
     if (waiting_for_server){
         return
     }
+    data["password"]=password
     req = new XMLHttpRequest();
     req.open("POST", url, true);
     req.onreadystatechange = function() {
@@ -258,6 +259,15 @@ function transform_into_position(old_pos,new_pos){
 }
 
 function handle_server_data(data){
+    if ("password" in data && data["password"]=="wrong"){
+        eraseCookie("password")
+        alert("WRONG password")
+        location.reload();
+        return
+    }
+    if (first_data_from_server){
+        setCookie("password",password,5);
+    }
     if ("settings" in data){
         settings = data["settings"];
         mode = "config";
@@ -372,8 +382,35 @@ function remove_stone(square){
     stone_ctx.clearRect(pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
 }
 
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+var first_data_from_server = true;
+var password = getCookie("password");
+if (password==null || password.length==0){
+    password = prompt("Enter the super secret password to be extra secret");
+}
 xml_http_post("html/go.html",{},handle_server_data)
-mode = "explorer"
 document.getElementById("explorer-box").innerHTML = explorer_html
 </script>
 </body>
