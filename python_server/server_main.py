@@ -26,6 +26,8 @@ class Stuff_handler():
         self.book_handler = Book_lookupper(self.book,self.settings)
 
     def handle_get(self,uri):
+        if uri=="/":
+            uri = "/html/go.html"
         try:
             with open(uri[1:],"r") as f:
                 my_content = f.read().encode()
