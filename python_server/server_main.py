@@ -7,7 +7,16 @@ import numpy as np
 import webbrowser
 import threading
 import json
+import os
 from urllib.parse import parse_qs
+
+def path_is_parent(parent_path, child_path):
+    # Smooth out relative path names, note: if you are concerned about symbolic links, you should use os.path.realpath too
+    parent_path = os.path.abspath(parent_path)
+    child_path = os.path.abspath(child_path)
+
+    # Compare the common path of the parent and child path with the common path of just the parent path. Using the commonpath method on just the parent path will regularise the path name in the same way as the comparison that deals with both paths, removing any trailing path separator
+    return os.path.commonpath([parent_path]) == os.path.commonpath([parent_path, child_path])
 
 class Stuff_handler():
     def __init__(self):
@@ -30,6 +39,8 @@ class Stuff_handler():
         if uri=="/":
             uri = "/html/go.html"
         try:
+            if not path_is_parent(".",uri[1:]):
+                return False
             with open(uri[1:],"r") as f:
                 my_content = f.read().encode()
         except FileNotFoundError:
@@ -76,7 +87,7 @@ def application(environ, start_response):
         out = handler.handle_post(post_input)
     if not out:
         start_response('404 NOT FOUND', [('Content-Type',"text/html")])
-        return [b""]    
+        return [b"404 NOT FOUND"]    
     start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
     return out
 
