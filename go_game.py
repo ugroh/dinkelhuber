@@ -64,8 +64,11 @@ class Go_game():
         self.hist_index+=amount
         if self.hist_index >= len(self.history):
             self.hist_index = len(self.history)-1
+            if amount==1:
+                return False
         pos, self.onturn, self.hash = self.history[self.hist_index]
         self.position = [pos[0].copy(),pos[1].copy()]
+        return True
 
     def make_move(self,move):
         if move:
@@ -117,7 +120,7 @@ class Go_game():
                 else:
                     return False
             return alreadys
-        interest_squares = [move,(move[0]+1,move[1]),(move[0]-1,move[1]),(move[0],move[1]+1),(move[0]+1,move[1]-1)]
+        interest_squares = [move,(move[0]+1,move[1]),(move[0]-1,move[1]),(move[0],move[1]+1),(move[0],move[1]-1)]
         dead_stones = set()
         laters = set()
         for square in interest_squares:
@@ -183,4 +186,18 @@ def play_go(game):
 
 if __name__ == "__main__":
     game = Go_game(Rotater(9),np.load("zobrist.npy"))
+    game.set_pos_from_str("""
+    ###########
+    #         #
+    #      W  #
+    #    WWB  #
+    #    WBW  #
+    #  WWBBB  #
+    #   B     #
+    #   B     #
+    #         #
+    #         #
+    ###########
+    """)
+    game.onturn=False
     play_go(game)

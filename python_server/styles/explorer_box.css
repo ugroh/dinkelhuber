@@ -255,8 +255,8 @@ html {
      --meta-height: max-content
     }
    }
-   .analyse__tools {
-    max-height:100vh;
+   .explorer-box {
+    max-height:85vh;
    }
    .analyse__tools .sub-box {
     -webkit-user-select:none;

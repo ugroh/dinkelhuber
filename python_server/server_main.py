@@ -7,85 +7,74 @@ import numpy as np
 import webbrowser
 import threading
 import json
-from http.server import HTTPServer,SimpleHTTPRequestHandler
+from urllib.parse import parse_qs
 
-class Post_handler(SimpleHTTPRequestHandler):
+class Stuff_handler():
+    def __init__(self):
+        self.ending_to_content_type = {
+            "html": "text/html",
+            "css": "text/css",
+            "png": "image/png",
+            "jpg": "image/jpeg",
+            "jpeg": "image/jpeg",
+            "json": "application/json"
+        }
+        self.settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese"]]
+        with open("binfiles/book.pkl","rb") as f:
+            self.book = pickle.load(f)
+        self.game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"),size=9)
+        self.book_handler = Book_lookupper(self.book,self.settings)
 
-    def _set_headers(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-
-    def do_GET(self):
-        if self.path.endswith("html/go.html"):
-            self.send_response(200)
-
-            # Setting the header
-            self.send_header("Content-type", "text/html")
-
-            # Whenever using 'send_header', you also have to call 'end_headers'
-            self.end_headers()
-            with open("html/go.html","r") as f:
+    def handle_get(self,uri):
+        try:
+            with open(uri[1:],"r") as f:
+                my_content = f.read().encode()
+        except FileNotFoundError:
+            return False
+        except UnicodeDecodeError as e:
+            with open(uri[1:],"rb") as f:
                 my_content = f.read()
-            self.wfile.write(my_content.encode())
-        else:
-            super().do_GET()
+        return [my_content]
 
-    def do_POST(self):
-        global settings
-        # read the message and convert it into a python dictionary
-        length = int(self.headers['Content-Length'])
-        data = json.loads(self.rfile.read(length))
+    def handle_post(self,data):
         print(data)
         if "request" in data:
             if data["request"] == "settings":
-                return_data = {"settings":settings}
+                return_data = {"settings":self.settings}
         else:
             if "revert" in data:
-                print("before_revert",len(game.history))
-                game.revert_move(data["revert"])
-                print("after_revert",len(game.history))
+                self.game.revert_move(data["revert"])
             elif "forward" in data:
-                game.forward(data["forward"])
+                success = self.game.forward(data["forward"])
+                if not success:
+                    self.game.make_move(tuple(self.moves_with_data[0]["move"]))
             elif "move" in data:
-                print("before_move",len(game.history))
-                game.make_move(tuple(data["move"]))
-                print("after_move",len(game.history))
+                self.game.make_move(tuple(data["move"]))
             if "settings" in data:
-                settings = data["settings"]
-                book_handler.change_settings(settings)
-            moves_with_hash = game.get_next_hashes()
-            moves_with_data = book_handler.lookup_games(moves_with_hash)
-            moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
-            print(game)
+                self.settings = data["settings"]
+                self.book_handler.change_settings(self.settings)
+            moves_with_hash = self.game.get_next_hashes()
+            self.moves_with_data = self.book_handler.lookup_games(moves_with_hash)
+            self.moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
+            print(self.game)
             return_data = {
-                "position": [x.tolist() for x in game.position],
-                "moves": moves_with_data
+                "position": [x.tolist() for x in self.game.position],
+                "moves": self.moves_with_data
             }
-        # send the message back
-        self._set_headers()
-        self.wfile.write(json.dumps(return_data).encode())
+        return [json.dumps(return_data).encode()]
 
-def open_browser():
-    """Start a browser after waiting for half a second."""
-    def _open_browser():
-        webbrowser.open('http://localhost:%s/%s' % (PORT, FILE))
-    thread = threading.Timer(0.5, _open_browser)
-    thread.start()
+def application(environ, start_response):
+    #get_input = parse_qs(environ['QUERY_STRING'])
+    uri = environ["REQUEST_URI"]
+    if environ["REQUEST_METHOD"] == "GET":
+        out = handler.handle_get(uri)
+    elif environ["REQUEST_METHOD"] == "POST":
+        post_input = json.loads(environ['wsgi.input'].readline().decode())
+        out = handler.handle_post(post_input)
+    if not out:
+        start_response('404 NOT FOUND', [('Content-Type',"text/html")])
+        return [b""]    
+    start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
+    return out
 
-def start_server():
-    """Start the server."""
-    server_address = ("", PORT)
-    server = HTTPServer(server_address, Post_handler)
-    server.serve_forever()
-
-if __name__ == '__main__':
-    FILE = "html/go.html"
-    PORT = 6001
-    settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese","Chinese"]]
-    with open("../book.pkl","rb") as f:
-        book = pickle.load(f)
-    game = Go_game(Rotater(9),np.load("../zobrist.npy"),size=9)
-    book_handler = Book_lookupper(book,settings)
-    open_browser()
-    start_server()
+handler = Stuff_handler()
