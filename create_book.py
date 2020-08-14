@@ -131,10 +131,10 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
                 logger.warn("{}: Missing winner info".format(gid))
                 return False
             usebook = select_book(book,(game_info["black_rating"]+game_info["white_rating"])/2,komi,rules,gid)
-            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
             if usebook is None:
                 logger.warn("{}: Usebook is None".format(gid))
                 return False
+            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
         if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
             move = convert_move_to_num(extract_val(line))
             game.make_move(move)
