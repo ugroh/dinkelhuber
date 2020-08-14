@@ -132,7 +132,6 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
                 return False
             usebook = select_book(book,(game_info["black_rating"]+game_info["white_rating"])/2,komi,rules,gid)
             if usebook is None:
-                logger.warn("{}: Usebook is None".format(gid))
                 return False
             update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
         if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
