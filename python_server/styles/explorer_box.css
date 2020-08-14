@@ -373,3 +373,40 @@ html {
     .explorer-box .config .choices span:hover {
         background: #fff;
     }
+    .explorer-box .games {
+        width: 100%;
+    }
+    .explorer-box .games td {
+        padding: 5px 0 5px 7px;
+        max-width: 110px;
+    }
+    .explorer-box .games td span {
+        display: block;
+    }
+    .explorer-box .games td span {
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .explorer-box .games result {
+        display: block;
+        text-align: center;
+        padding: 3px 5px;
+        border-radius: 3px;
+        font-size: .9em;
+    }
+    .explorer-box .draws {
+        background: #666;
+    }
+    .explorer-box .draws, .explorer-box .black {
+        color: #ddd;
+        box-shadow: 0 5px 7px rgba(255,255,255,0.1) inset;
+    }
+    .explorer-box .white {
+        background: #ccc;
+        box-shadow: 0 -5px 7px rgba(0,0,0,0.25) inset;
+        color: #222;
+    }
+    .explorer-box .black {
+        background: #333;
+        color: #ddd;
+    }

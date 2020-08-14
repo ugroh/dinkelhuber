@@ -65,6 +65,7 @@ const explorer_html = `
                    <tbody id="move-table">
                    </tbody>
                 </table>
+                <table class="games"><thead><tr><th class="title" colspan="4">Top games</th></tr></thead><tbody id="games_body"></tbody></table>
             </div>
             <span class="toconf" data-icon="⚙️" onmousedown="go_config_mode()"></span>
 `
@@ -276,9 +277,49 @@ function handle_server_data(data){
         show_selected_settings(settings);
         return
     }
+    console.log(data)
+    show_top_games(data["pos_info"]["games_tuples"])
     set_aval_moves(data["moves"])
     transform_into_position(position,data["position"])
     position = data["position"]
+}
+
+function show_top_games(game_infos){
+    //<tr data-id="jYSkjcuG"><td><span>2882</span><span>2818</span></td><td><span>Carlsen, M.</span><span>Caruana, F.</span></td><td><result class="draws">½-½</result></td><td>2019</td></tr><tr data-id="QR5UbqUY"><td><span>2882</span><span>2818</span></td><td><span>Carlsen, M.</span><span>Caruana, F.</span></td><td><result class="draws">½-½</result></td><td>2019</td></tr><tr data-id="boLujJkB"><td><span>2818</span><span>2882</span></td><td><span>Caruana, F.</span><span>Carlsen, M.</span></td><td><result class="white">1-0</result></td><td>2019</td></tr><tr data-id="Sxov6E94"><td><span>2818</span><span>2882</span></td><td><span>Caruana, F.</span><span>Carlsen, M.</span></td><td><result class="white">1-0</result></td><td>2019</td></tr>
+    //0: avg_rating, 1: ogs link, 2: black name, 3: white name, 4: black rating, 5: white rating, 6: winner, 7: year
+    var gb = document.getElementById("games_body");
+    gb.innerHTML = "";
+    for (var i = 0;i<game_infos.length;i++){
+        let gi = game_infos[i];
+        let tr = document.createElement("tr");
+        gb.appendChild(tr);
+        tr.setAttribute("onmousedown","window.open('"+gi[1]+"','_blank');")
+        let rating_td = document.createElement("td");
+        tr.appendChild(rating_td);
+        let brating = document.createElement("span");
+        rating_td.appendChild(brating);
+        brating.innerText = convert_rating_readable(gi[4]);
+        let wrating = document.createElement("span");
+        rating_td.appendChild(wrating);
+        wrating.innerText = convert_rating_readable(gi[5]);
+        let player_td = document.createElement("td");
+        tr.appendChild(player_td);
+        let pblack = document.createElement("span");
+        player_td.appendChild(pblack);
+        pblack.innerText = gi[2];
+        let pwhite = document.createElement("span");
+        player_td.appendChild(pwhite);
+        pwhite.innerText = gi[3];
+        let res_td = document.createElement("td");
+        tr.appendChild(res_td);
+        let res = document.createElement("result");
+        res_td.appendChild(res);
+        res.setAttribute("class",gi[6]=="B"?"black":"white");
+        res.innerText = gi[6]+"+";
+        let date_td = document.createElement("td");
+        tr.appendChild(date_td);
+        date_td.innerText = gi[7];
+    }
 }
 
 stone_canvas.addEventListener("mousedown",function(e){
@@ -389,7 +430,7 @@ function setCookie(name,value,days) {
         date.setTime(date.getTime() + (days*24*60*60*1000));
         expires = "; expires=" + date.toUTCString();
     }
-    document.cookie = name + "=" + (value || "")  + expires + "; path=/";
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/;SameSite=Strict";
 }
 function getCookie(name) {
     var nameEQ = name + "=";

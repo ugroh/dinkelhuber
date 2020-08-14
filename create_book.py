@@ -3,6 +3,8 @@ from go_game import Go_game,Rotater
 import os,sys
 import numpy as np
 import logging
+from tqdm import tqdm
+from shove import Shove
 
 # create logger with 'root'
 logger = logging.getLogger()
@@ -32,7 +34,7 @@ def convert_kyu_to_num(rat_str):
         return int(rat_str.replace("d", ""))
 
 def select_book(book,rating,komi,rules,gid):
-    if rules in ("Korean","AGA","New Zealand","Ing"):
+    if rules in ("Korean","AGA","NZ","Ing"):
         logger.debug("{}: {} rules, skipping game".format(gid,rules))
         return None
     if komi is None:
@@ -54,14 +56,29 @@ def select_book(book,rating,komi,rules,gid):
     mybook = mybook[rules]
     return mybook
 
-def update_statistics(book,myhash,rating,win):
+def update_statistics(book,game_info,myhash,player_color):
+    avg_rating = (game_info["white_rating"]+game_info["black_rating"])/2
+    player_rating = game_info["white_rating"] if player_color=="W" else game_info["black_rating"]
+    #0: avg_rating, 1: ogs link, 2: black name, 3: white name, 4: black rating, 5: white rating, 6: winner, 7: year
+    info_tuple = (avg_rating,game_info["ogs_link"],game_info["player_black"],game_info["player_white"],
+                  game_info["black_rating"],game_info["white_rating"],game_info["winner"],game_info["year"])
     if myhash in book:
         entry = book[myhash]
-        games = entry[0]+entry[1]
-        entry[2] = (entry[2]+rating/(games+1))/(1+1/(games+1))
-        entry[int(win=="W")]+=1
+        new_entry = entry[:3]+[entry[3].copy()]
+        if new_entry[3][-1][0]<avg_rating:
+            for i,val in enumerate(new_entry[3]):
+                if val[0]<avg_rating:
+                    new_entry[3].insert(i,info_tuple)
+                    break
+            new_entry[3] = new_entry[3][:4]
+        elif len(new_entry[3])<4:
+            new_entry[3].append(info_tuple)
+        games = new_entry[0]+new_entry[1]
+        new_entry[2] = (new_entry[2]+player_rating/(games+1))/(1+1/(games+1))
+        new_entry[int(game_info["winner"]=="W")]+=1
+        book[myhash] = new_entry
     else:
-        book[myhash] = np.array([int(win=="B"),int(win=="W"),rating],dtype=np.float32)
+        book[myhash] = [int(game_info["winner"]=="B"),int(game_info["winner"]=="W"),player_rating,[info_tuple]]
 
 letter_map = "abcdefghi"
 def convert_move_to_num(move_str):
@@ -73,25 +90,31 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
     def extract_val(line):
         return line.split("[")[1].split("]")[0]
     game.reset()
-    black_rating = None
-    white_rating = None
     komi = None
     rules = None
-    winner = None
     usebook = None
+    game_info = {}
     cur_move = 0
     with open(filepath,'r') as f:
         lines = f.read().splitlines()
     for line in lines:
         if line.startswith("BR"):
-            black_rating = convert_kyu_to_num(extract_val(line))
+            game_info["black_rating"] = convert_kyu_to_num(extract_val(line))
         elif line.startswith("WR"):
-            white_rating = convert_kyu_to_num(extract_val(line))
+            game_info["white_rating"] = convert_kyu_to_num(extract_val(line))
+        elif line.startswith("PB"):
+            game_info["player_black"] = extract_val(line)
+        elif line.startswith("PW"):
+            game_info["player_white"] = extract_val(line)
+        elif line.startswith("DT"):
+            game_info["year"] = extract_val(line).split("-")[0]
         elif line.startswith("RE"):
             if "W" in line:
-                winner = "W"
+                game_info["winner"] = "W"
             else:
-                winner = "B"
+                game_info["winner"] = "B"
+        elif line.startswith("PC"):
+            game_info["ogs_link"] = extract_val(line).replace("OGS: ","")
         elif line.startswith("SZ"):
             if int(extract_val(line))!=9:
                 logger.warn("{}: Invalid board size: {}".format(gid,line))
@@ -104,11 +127,13 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
         elif line.startswith("RU"):
             rules = extract_val(line)
         elif usebook is None and line.startswith(";B"):
-            if winner is None:
-                logger.warn("{}: Missing winner info, {}".format(gid,winner))
+            if not "winner" in game_info:
+                logger.warn("{}: Missing winner info".format(gid))
                 return False
-            usebook = select_book(book,(black_rating+white_rating)/2,komi,rules,gid)
+            usebook = select_book(book,(game_info["black_rating"]+game_info["white_rating"])/2,komi,rules,gid)
+            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
             if usebook is None:
+                logger.warn("{}: Usebook is None".format(gid))
                 return False
         if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
             move = convert_move_to_num(extract_val(line))
@@ -116,44 +141,44 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
             if usebook is None:
                 logger.warn("{}: usebook is None, {}".format(gid,line))
                 return False
-            update_statistics(usebook,hash(game),black_rating if (line.startswith(";B") or line.startswith("(;B")) else white_rating,winner)
+            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
             cur_move+=1
         if cur_move>=max_half_moves:
             break
-    return True
+    return False if usebook is None else True
 
 def create_book(gamefol="games"):
     book = {
         "dan":{
             "lower":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/dan_lower_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/dan_lower_Chinese.db")
             },
             "5.5":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/dan_5.5_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/dan_5.5_Chinese.db")
             },
             "higher":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/dan_higher_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/dan_higher_Chinese.db")
             }
         },
         "kyu":{
             "lower":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/kyu_lower_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/kyu_lower_Chinese.db")
             },
             "5.5":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/kyu_5.5_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/kyu_5.5_Chinese.db")
             },
             "higher":{
-                "Japanese":{},
-                "Chinese":{}
+                "Japanese":Shove("lite://python_server/books/kyu_higher_Japanese.db"),
+                "Chinese":Shove("lite://python_server/books/kyu_higher_Chinese.db")
             }
         }
     }
-    zobrist = np.load("zobrist.npy")
+    zobrist = np.load("python_server/binfiles/zobrist.npy")
     go_game = Go_game(Rotater(9),zobrist,size=9)
     already_games = set()
     game_num = 0
@@ -163,7 +188,7 @@ def create_book(gamefol="games"):
     for player_id in os.listdir(gamefol):
         logger.info("extracting from pid: {}".format(player_id))
         path = os.path.join(gamefol, player_id)
-        for game in os.listdir(path):
+        for game in tqdm(os.listdir(path)):
             gid = game.split(".")[0]
             if gid in already_games:
                 continue
@@ -177,12 +202,6 @@ def create_book(gamefol="games"):
                 failed_num += 1
         pid_num+=1
         logger.info("Games extracted: {}, Games failed: {}, Players done: {}, Players left: {}".format(game_num,failed_num,pid_num,num_players-pid_num))
-        if pid_num%10==0:
-            logger.info("Saving")
-            with open("book.pkl","wb") as f:
-                pickle.dump(book,f)
-    with open("book.pkl","wb") as f:
-        pickle.dump(book,f)
 
 if __name__ == "__main__":
     create_book()

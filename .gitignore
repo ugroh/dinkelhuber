@@ -1,2 +1,6 @@
 games/
+old_games/
 book.pkl
+__pycache__/
+.vscode/
+books/

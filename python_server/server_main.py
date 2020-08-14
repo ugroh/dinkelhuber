@@ -71,12 +71,14 @@ class Stuff_handler():
                     self.settings = data["settings"]
                     self.book_handler.change_settings(self.settings)
                 moves_with_hash = self.game.get_next_hashes()
-                self.moves_with_data = self.book_handler.lookup_games(moves_with_hash)
+                self.moves_with_data = self.book_handler.lookup_moves(moves_with_hash)
                 self.moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
+                cur_info = self.book_handler.lookup_hash(hash(self.game),with_games_tuples=True)
                 print(self.game)
                 return_data = {
                     "position": [x.tolist() for x in self.game.position],
-                    "moves": self.moves_with_data
+                    "moves": self.moves_with_data,
+                    "pos_info":cur_info
                 }
         return [json.dumps(return_data).encode()]
 
