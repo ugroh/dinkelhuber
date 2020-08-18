@@ -71,6 +71,7 @@ class Book_lookupper():
         if with_games_tuples:
             cum_info["games_tuples"] = []
         for book in self.cur_books:
+            print("checking a book")
             if myhash in book:
                 print("looking at first entry")
                 entry = book[myhash]
@@ -90,6 +91,7 @@ class Book_lookupper():
         for move,myhash in moves_with_hash:
             print(f"looking up hash {myhash}")
             cum_info = self.lookup_hash(myhash,with_games_tuples=False)
+            print("done here")
             if cum_info["black_wins"]>0 or cum_info["black_wins"]>0:
                 cum_info["move"] = move
                 moves_with_data.append(cum_info)
