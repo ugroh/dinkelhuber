@@ -86,8 +86,11 @@ class Stuff_handler():
         return [json.dumps(return_data).encode()]
 
 def application(environ, start_response):
+    global handler
     #get_input = parse_qs(environ['QUERY_STRING'])
-    if handler is None:
+    try:  # This is disgusting!
+        handler
+    except:
         print("Creating the handler")
         handler = Stuff_handler()
     uri = environ["REQUEST_URI"]
@@ -101,5 +104,3 @@ def application(environ, start_response):
         return [b"404 NOT FOUND"]
     start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
     return out
-
-handler = None
