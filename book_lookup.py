@@ -2,7 +2,7 @@ import numpy as np
 from shove import Shove
 
 class Book_lookupper():
-    def __init__(self,book,settings):
+    def __init__(self,settings):
         self.books = {
             "dan":{
                 "lower":{
