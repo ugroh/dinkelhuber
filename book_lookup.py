@@ -87,6 +87,7 @@ class Book_lookupper():
     def lookup_moves(self,moves_with_hash):
         moves_with_data = []
         for move,myhash in moves_with_hash:
+            print(f"looking up hash {myhash}")
             cum_info = self.lookup_hash(myhash,with_games_tuples=False)
             if cum_info["black_wins"]>0 or cum_info["black_wins"]>0:
                 cum_info["move"] = move
