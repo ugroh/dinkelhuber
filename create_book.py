@@ -28,9 +28,9 @@ def convert_kyu_to_num(rat_str):
     if rat_str=="?":
         return -25
     elif "k" in rat_str:
-        return -int(rat_str.replace("k", ""))
+        return -int(rat_str.replace("k", "").replace("-",""))
     elif "d" in rat_str:
-        return int(rat_str.replace("d", ""))
+        return int(rat_str.replace("d", "").replace("-",""))
 
 def select_book(book,rating,komi,rules,gid):
     if rules in ("Korean","AGA","NZ","Ing"):
