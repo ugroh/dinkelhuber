@@ -33,7 +33,6 @@ class Book_lookupper():
                 }
             }
         }
-        print(1700110762739422724 in self.books["dan"]["lower"]["Japanese"])
         self.change_settings(settings)
 
     def merge_books(self,books):
@@ -68,6 +67,8 @@ class Book_lookupper():
             self.cur_books = new_layer
 
     def lookup_hash(self,myhash,with_games_tuples=True):
+        print(type(myhash))
+        print(myhash in self.cur_books[0])
         cum_info = {"black_wins":0,"white_wins":0,"rating":0}
         if with_games_tuples:
             cum_info["games_tuples"] = []
