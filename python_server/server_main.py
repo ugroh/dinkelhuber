@@ -31,7 +31,9 @@ class Stuff_handler():
         }
         self.settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese"]]
         self.game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"),size=9)
+        print("Creating book handler")
         self.book_handler = Book_lookupper(self.settings)
+        print("Created book handler")
         self.password = sys.argv[1] if len(sys.argv) > 1 else ""
 
     def handle_get(self,uri):
