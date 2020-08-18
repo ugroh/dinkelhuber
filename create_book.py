@@ -4,8 +4,7 @@ import os,sys
 import numpy as np
 import logging
 from tqdm import tqdm
-from shove import Shove
-
+from sqlitedict import SqliteDict
 # create logger with 'root'
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
@@ -133,14 +132,14 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
             usebook = select_book(book,(game_info["black_rating"]+game_info["white_rating"])/2,komi,rules,gid)
             if usebook is None:
                 return False
-            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
+            update_statistics(usebook,game_info,game.do_hash(),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
         if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
             move = convert_move_to_num(extract_val(line))
             game.make_move(move)
             if usebook is None:
                 logger.warn("{}: usebook is None, {}".format(gid,line))
                 return False
-            update_statistics(usebook,game_info,hash(game),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
+            update_statistics(usebook,game_info,game.do_hash(),"B" if (line.startswith(";B") or line.startswith("(;B")) else "W")
             cur_move+=1
         if cur_move>=max_half_moves:
             break
@@ -150,30 +149,30 @@ def create_book(gamefol="games"):
     book = {
         "dan":{
             "lower":{
-                "Japanese":Shove("lite://python_server/books/dan_lower_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/dan_lower_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/dan_lower_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/dan_lower_Chinese.sqlite")
             },
             "5.5":{
-                "Japanese":Shove("lite://python_server/books/dan_5.5_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/dan_5.5_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/dan_5.5_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/dan_5.5_Chinese.sqlite")
             },
             "higher":{
-                "Japanese":Shove("lite://python_server/books/dan_higher_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/dan_higher_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/dan_higher_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/dan_higher_Chinese.sqlite")
             }
         },
         "kyu":{
             "lower":{
-                "Japanese":Shove("lite://python_server/books/kyu_lower_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/kyu_lower_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/kyu_lower_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/kyu_lower_Chinese.sqlite")
             },
             "5.5":{
-                "Japanese":Shove("lite://python_server/books/kyu_5.5_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/kyu_5.5_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/kyu_5.5_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/kyu_5.5_Chinese.sqlite")
             },
             "higher":{
-                "Japanese":Shove("lite://python_server/books/kyu_higher_Japanese.db"),
-                "Chinese":Shove("lite://python_server/books/kyu_higher_Chinese.db")
+                "Japanese":SqliteDict("./python_server/books/kyu_higher_Japanese.sqlite"),
+                "Chinese":SqliteDict("./python_server/books/kyu_higher_Chinese.sqlite")
             }
         }
     }
@@ -200,6 +199,12 @@ def create_book(gamefol="games"):
             else:
                 failed_num += 1
         pid_num+=1
+        if pid_num%10==0:
+            logger.info("commiting changes")
+            for l1 in book.values():
+                for l2 in l1.values():
+                    for l3 in l2.values():
+                        l3.commit()
         logger.info("Games extracted: {}, Games failed: {}, Players done: {}, Players left: {}".format(game_num,failed_num,pid_num,num_players-pid_num))
 
 if __name__ == "__main__":

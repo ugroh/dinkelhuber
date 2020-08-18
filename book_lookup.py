@@ -1,35 +1,35 @@
 import numpy as np
-from shove import Shove
+from sqlitedict import SqliteDict
 
 class Book_lookupper():
     def __init__(self,settings):
         self.books = {
             "dan":{
                 "lower":{
-                    "Japanese":Shove("lite://books/dan_lower_Japanese.db"),
-                    "Chinese":Shove("lite://books/dan_lower_Chinese.db")
+                    "Japanese":SqliteDict("./books/dan_lower_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/dan_lower_Chinese.sqlite")
                 },
                 "5.5":{
-                    "Japanese":Shove("lite://books/dan_5.5_Japanese.db"),
-                    "Chinese":Shove("lite://books/dan_5.5_Chinese.db")
+                    "Japanese":SqliteDict("./books/dan_5.5_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/dan_5.5_Chinese.sqlite")
                 },
                 "higher":{
-                    "Japanese":Shove("lite://books/dan_higher_Japanese.db"),
-                    "Chinese":Shove("lite://books/dan_higher_Chinese.db")
+                    "Japanese":SqliteDict("./books/dan_higher_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/dan_higher_Chinese.sqlite")
                 }
             },
             "kyu":{
                 "lower":{
-                    "Japanese":Shove("lite://books/kyu_lower_Japanese.db"),
-                    "Chinese":Shove("lite://books/kyu_lower_Chinese.db")
+                    "Japanese":SqliteDict("./books/kyu_lower_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/kyu_lower_Chinese.sqlite")
                 },
                 "5.5":{
-                    "Japanese":Shove("lite://books/kyu_5.5_Japanese.db"),
-                    "Chinese":Shove("lite://books/kyu_5.5_Chinese.db")
+                    "Japanese":SqliteDict("./books/kyu_5.5_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/kyu_5.5_Chinese.sqlite")
                 },
                 "higher":{
-                    "Japanese":Shove("lite://books/kyu_higher_Japanese.db"),
-                    "Chinese":Shove("lite://books/kyu_higher_Chinese.db")
+                    "Japanese":SqliteDict("./books/kyu_higher_Japanese.sqlite"),
+                    "Chinese":SqliteDict("./books/kyu_higher_Chinese.sqlite")
                 }
             }
         }

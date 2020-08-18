@@ -38,7 +38,7 @@ class Go_game():
         self.rotater = rotater
         self.zobrist = zobrist
         self.reset()
-        self.hash = hash(self)
+        self.hash = self.do_hash()
         self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash)]
     def reset(self):
         self.position = [np.zeros((self.size,self.size),dtype=bool),np.zeros((self.size,self.size),dtype=bool)]
@@ -75,7 +75,7 @@ class Go_game():
             self.position[self.onturn][move] = True
             self.remove_dead_stones(move)
         self.onturn = not self.onturn
-        self.hash = hash(self)
+        self.hash = self.do_hash()
         self.hist_index+=1
         self.history = self.history[:self.hist_index]
         self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash))
@@ -157,7 +157,7 @@ class Go_game():
             out_str+="#\n"
         out_str+="#"*(self.size+2)
         return out_str
-    def __hash__(self):
+    def do_hash(self):
         def hash_without_sym(pos):
             out = 0
             for row in range(self.size):

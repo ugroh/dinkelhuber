@@ -51,7 +51,7 @@ def test_symetry():
         ###########
         """
     )
-    if hash(go_game1)==hash(go_game2):
+    if go_game1.do_hash()==go_game2.do_hash():
         print("mirrory success")
     else:
         print("mirrory failed")
@@ -70,7 +70,7 @@ def test_symetry():
         ###########
         """
     )
-    if hash(go_game1)==hash(go_game2):
+    if go_game1.do_hash()==go_game2.do_hash():
         print("mirrory success")
     else:
         print("mirrory failed")
@@ -89,7 +89,7 @@ def test_symetry():
         ###########
         """
     )
-    if hash(go_game1)==hash(go_game2):
+    if go_game1.do_hash()==go_game2.do_hash():
         print("mirror_bl_tr success")
     else:
         print("mirror_bl_tr failed")
@@ -108,7 +108,7 @@ def test_symetry():
         ###########
         """
     )
-    if hash(go_game1)!=hash(go_game2):
+    if go_game1.do_hash()!=go_game2.do_hash():
         print("catch trial success")
     else:
         print("catch trial failed")
