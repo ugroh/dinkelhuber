@@ -3,7 +3,6 @@ from shove import Shove
 
 class Book_lookupper():
     def __init__(self,book,settings):
-        self.all_book = book
         self.books = {
             "dan":{
                 "lower":{

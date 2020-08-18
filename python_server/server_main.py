@@ -30,10 +30,8 @@ class Stuff_handler():
             "json": "application/json"
         }
         self.settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese"]]
-        with open("binfiles/book.pkl","rb") as f:
-            self.book = pickle.load(f)
         self.game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"),size=9)
-        self.book_handler = Book_lookupper(self.book,self.settings)
+        self.book_handler = Book_lookupper(self.settings)
         self.password = sys.argv[1] if len(sys.argv) > 1 else ""
 
     def handle_get(self,uri):
