@@ -31,12 +31,11 @@ class Stuff_handler():
         }
         self.settings = [["dan","kyu"],["lower","5.5","higher"],["Japanese"]]
         self.game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"),size=9)
-        print("Creating book handler")
         self.book_handler = Book_lookupper(self.settings)
-        print("Created book handler")
         self.password = sys.argv[1] if len(sys.argv) > 1 else ""
 
     def handle_get(self,uri):
+        print("Received get request")
         if uri=="/":
             uri = "/html/go.html"
         try:
@@ -52,6 +51,7 @@ class Stuff_handler():
         return [my_content]
 
     def handle_post(self,data):
+        print(data)
         if (not "password" in data) or data["password"]!=self.password:
             return_data = {"password":"wrong"}
         else:
@@ -71,9 +71,11 @@ class Stuff_handler():
                     self.settings = data["settings"]
                     self.book_handler.change_settings(self.settings)
                 moves_with_hash = self.game.get_next_hashes()
+                print("looking up games")
                 self.moves_with_data = self.book_handler.lookup_moves(moves_with_hash)
                 self.moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
                 cur_info = self.book_handler.lookup_hash(self.game.do_hash(),with_games_tuples=True)
+                print("looked up games")
                 print(self.game)
                 return_data = {
                     "position": [x.tolist() for x in self.game.position],
