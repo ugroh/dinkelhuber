@@ -71,7 +71,7 @@ class Book_lookupper():
         if with_games_tuples:
             cum_info["games_tuples"] = []
         for book in self.cur_books:
-            print("checking a book")
+            print("checking a book",book,myhash)
             if myhash in book:
                 print("looking at first entry")
                 entry = book[myhash]
