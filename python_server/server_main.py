@@ -87,9 +87,9 @@ class Stuff_handler():
 
 def application(environ, start_response):
     #get_input = parse_qs(environ['QUERY_STRING'])
-    print("trying to look up something")
-    somedict = SqliteDict("./books/dan_lower_Japanese.sqlite")
-    print(1700110762739422724 in somedict)
+    if handler is None:
+        print("Creating the handler")
+        handler = Stuff_handler()
     uri = environ["REQUEST_URI"]
     if environ["REQUEST_METHOD"] == "GET":
         out = handler.handle_get(uri)
@@ -102,4 +102,4 @@ def application(environ, start_response):
     start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
     return out
 
-handler = Stuff_handler()
+handler = None
