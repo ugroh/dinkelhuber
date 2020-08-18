@@ -67,16 +67,11 @@ class Book_lookupper():
             self.cur_books = new_layer
 
     def lookup_hash(self,myhash,with_games_tuples=True):
-        print(type(myhash))
-        print(myhash in self.cur_books[0])
         cum_info = {"black_wins":0,"white_wins":0,"rating":0}
         if with_games_tuples:
             cum_info["games_tuples"] = []
         for book in self.cur_books:
-            print("checking a book",book,myhash)
-            print(myhash in book)
             if myhash in book:
-                print("looking at first entry")
                 entry = book[myhash]
                 cum_info["black_wins"] += entry[0]
                 cum_info["white_wins"] += entry[1]
@@ -92,9 +87,7 @@ class Book_lookupper():
     def lookup_moves(self,moves_with_hash):
         moves_with_data = []
         for move,myhash in moves_with_hash:
-            print(f"looking up hash {myhash}")
             cum_info = self.lookup_hash(myhash,with_games_tuples=False)
-            print("done here")
             if cum_info["black_wins"]>0 or cum_info["black_wins"]>0:
                 cum_info["move"] = move
                 moves_with_data.append(cum_info)
