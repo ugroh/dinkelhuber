@@ -1,6 +1,7 @@
 import sys
 sys.path.append("..")
 from go_game import Go_game,Rotater
+from sqlitedict import SqliteDict
 from book_lookup import Book_lookupper
 import pickle
 import numpy as np
@@ -87,8 +88,8 @@ class Stuff_handler():
 def application(environ, start_response):
     #get_input = parse_qs(environ['QUERY_STRING'])
     print("trying to look up something")
-    print(handler.book_handler.books["dan"]["lower"]["Japanese"][1700110762739422724])
-    print(1700110762739422724 in handler.book_handler.books["dan"]["lower"]["Japanese"])
+    somedict = SqliteDict("./books/dan_lower_Japanese.sqlite")
+    print(1700110762739422724 in somedict)
     uri = environ["REQUEST_URI"]
     if environ["REQUEST_METHOD"] == "GET":
         out = handler.handle_get(uri)
