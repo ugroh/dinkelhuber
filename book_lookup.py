@@ -33,6 +33,7 @@ class Book_lookupper():
                 }
             }
         }
+        print(32142431234 in self.books["dan"]["lower"]["Japanese"])
         self.change_settings(settings)
 
     def merge_books(self,books):
