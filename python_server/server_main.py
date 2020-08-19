@@ -11,7 +11,6 @@ import json
 import os
 from load_sgf import load_sgf, sync_to_equal_move
 from urllib.parse import parse_qs
-import requests
 
 def path_is_parent(parent_path, child_path):
     # Smooth out relative path names, note: if you are concerned about symbolic links, you should use os.path.realpath too
