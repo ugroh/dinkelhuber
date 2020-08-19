@@ -132,7 +132,7 @@ html {
     font-family:'Noto Chess', 'Noto Sans'
    }
    .explorer-box .overlay {
-    position:absolute;
+    position: absolute;
     top:0;
     left:0;
     width:100%;
@@ -271,7 +271,7 @@ html {
     padding:0 7px
    }
    .explorer-box {
-    position: absolute;;
+    position: relative;
     flex:2.5 1 0px;
     white-space:nowrap;
     transition:all 150ms;

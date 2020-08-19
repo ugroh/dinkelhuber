@@ -85,9 +85,10 @@ def convert_move_to_num(move_str):
         return tuple()
     return letter_map.index(move_str[0]), letter_map.index(move_str[1])
 
-def extract_a_game(game,filepath,book,gid,max_half_moves=20):
-    def extract_val(line):
+def extract_val(line):
         return line.split("[")[1].split("]")[0]
+
+def extract_a_game(game,filepath,book,gid,max_half_moves=20):
     game.reset()
     komi = None
     rules = None

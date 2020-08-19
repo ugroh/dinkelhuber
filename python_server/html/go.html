@@ -47,6 +47,10 @@
           <section id="explorer-box" class="explorer-box sub-box">
             
           </section>
+          <div class="pair">
+                <label class="game_id_text">Game ID</label>
+                <input id="Game_ID" type="text" name="Game_ID" class="game_id_field"/>
+          </div>
        </div>
     </main>
  </div> 
@@ -115,6 +119,8 @@ for (var i = 0; i < 9;i++){
     position[1].push(new Array(9).fill(false));
 }
 var waiting_for_server = false;
+var waiting_for_ogs = false;
+var sgf_cache = {};
 var stone_black = new Image(stone_size,stone_size);
 stone_black.src = "../images/black_stone.png";
 var stone_white = new Image(stone_size,stone_size);
@@ -149,6 +155,32 @@ for (var i in dot_poses) {
     board_ctx.fill();
 }
 
+document.getElementById("Game_ID").addEventListener("keydown",function(e){
+    if (e.keyCode==13){
+        if (waiting_for_ogs){
+            return;
+        }
+        var request = new XMLHttpRequest();
+        gid = parseInt(document.getElementById("Game_ID").value)
+        if (gid in sgf_cache){
+            xml_http_post("html/go.html",{"game_sgf":sgf_cache[gid]},handle_server_data)
+            return;
+        }
+        request.open("GET","https://online-go.com/api/v1/games/"+gid+"/sgf");
+        request.addEventListener('load', function(event) {
+        if (request.status >= 200 && request.status < 300) {
+            waiting_for_ogs=false;
+            sgf_cache[parseInt(document.getElementById("Game_ID").value)] = request.responseText;
+            xml_http_post("html/go.html",{"game_sgf":request.responseText},handle_server_data)
+        } else {
+            waiting_for_ogs=false;
+            console.warn(request.statusText, request.responseText);
+        }
+        });
+        request.send();
+        waiting_for_ogs = true;
+    }
+})
 document.addEventListener("keydown",function(e){
     if (e.keyCode==39){
         send_message("forward",1)

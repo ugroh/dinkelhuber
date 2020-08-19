@@ -1,5 +1,6 @@
 import numpy as np
 from sqlitedict import SqliteDict
+import time
 
 class Book_lookupper():
     def __init__(self,settings):
@@ -70,9 +71,13 @@ class Book_lookupper():
         cum_info = {"black_wins":0,"white_wins":0,"rating":0}
         if with_games_tuples:
             cum_info["games_tuples"] = []
+        start = time.perf_counter()
         for book in self.cur_books:
-            if myhash in book:
+            try:
                 entry = book[myhash]
+            except:
+                pass
+            else:
                 cum_info["black_wins"] += entry[0]
                 cum_info["white_wins"] += entry[1]
                 new_games = entry[0]+entry[1]
@@ -80,6 +85,7 @@ class Book_lookupper():
                 cum_info["rating"] = (cum_info["rating"]*(1-new_game_percent)+new_game_percent*entry[2])
                 if with_games_tuples:
                     cum_info["games_tuples"].extend(entry[3])
+        print(time.perf_counter()-start)
         if with_games_tuples:
             cum_info["games_tuples"].sort(key=lambda x:-x[0])
         return cum_info

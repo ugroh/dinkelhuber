@@ -8,8 +8,10 @@ import numpy as np
 import webbrowser
 import threading
 import json
-import os,sys
+import os
+from load_sgf import load_sgf, sync_to_equal_move
 from urllib.parse import parse_qs
+import requests
 
 def path_is_parent(parent_path, child_path):
     # Smooth out relative path names, note: if you are concerned about symbolic links, you should use os.path.realpath too
@@ -60,6 +62,9 @@ class Stuff_handler():
                 if data["request"] == "settings":
                     return_data = {"settings":self.settings}
             else:
+                if "game_sgf" in data:
+                    new_game = load_sgf(data["game_sgf"])
+                    self.game = sync_to_equal_move(self.game,new_game)
                 if "revert" in data:
                     self.game.revert_move(data["revert"])
                 elif "forward" in data:

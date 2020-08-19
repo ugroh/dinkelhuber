@@ -4,3 +4,4 @@ book.pkl
 __pycache__/
 .vscode/
 books/
+start_server.sh
