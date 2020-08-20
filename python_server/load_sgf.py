@@ -9,9 +9,7 @@ def load_sgf(sgf):
         return line.split("[")[1].split("]")[0]
     game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"))
     for line in sgf.splitlines():
-        if line.startswith("HA") or line.startswith("AB"):
-            return False
-        elif line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W"):
+        if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W") or line.startswith("AB"):
             extract_val(line)
             move = convert_move_to_num(extract_val(line))
             game.make_move(move)
