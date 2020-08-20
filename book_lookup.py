@@ -71,7 +71,6 @@ class Book_lookupper():
         cum_info = {"black_wins":0,"white_wins":0,"rating":0}
         if with_games_tuples:
             cum_info["games_tuples"] = []
-        start = time.perf_counter()
         for book in self.cur_books:
             try:
                 entry = book[myhash]
@@ -85,7 +84,6 @@ class Book_lookupper():
                 cum_info["rating"] = (cum_info["rating"]*(1-new_game_percent)+new_game_percent*entry[2])
                 if with_games_tuples:
                     cum_info["games_tuples"].extend(entry[3])
-        print(time.perf_counter()-start)
         if with_games_tuples:
             cum_info["games_tuples"].sort(key=lambda x:-x[0])
         return cum_info

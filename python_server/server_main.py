@@ -80,6 +80,7 @@ class Stuff_handler():
                 self.moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
                 cur_info = self.book_handler.lookup_hash(self.game.do_hash(),with_games_tuples=True)
                 print(self.game)
+                print(self.game.hash)
                 return_data = {
                     "position": [x.tolist() for x in self.game.position],
                     "moves": self.moves_with_data,
