@@ -21,7 +21,8 @@ def sync_to_equal_move(old_game, new_game):
     moves = []
     while 1:
         if not (np.array_equal(old_game.position[0],new_game.position[0]) and np.array_equal(old_game.position[1],new_game.position[1])):
-            new_game.revert_move(amount=1)
+            if new_game.revert_move(amount=1):
+                moves.pop()
             break
         worked_old = old_game.forward(1) 
         worked_new = new_game.forward(1)
