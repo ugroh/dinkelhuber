@@ -173,6 +173,7 @@ function sendchain(i,sends){
     if (i>=sends.length){
         return;
     }
+    engine_socket.send(sends[i]);
     setTimeout(function(){sendchain(i+1,sends);},100)
 }
 
