@@ -402,6 +402,7 @@ function handle_server_data(data){
         eval_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
         pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
         engine_eval=null;
+        cur_pv = [];
     }
     if ("onturn" in data){
         onturn = data["onturn"];
