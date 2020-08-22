@@ -169,28 +169,34 @@ for (var i in dot_poses) {
     board_ctx.fill();
 }
 
+function sendchain(i,sends){
+    if (i>=sends.length){
+        return;
+    }
+    setTimeout(function(){sendchain(i+1,sends);},100)
+}
+
 function websocket_handle_made_moves(made_moves){
+    console.log(made_moves)
     if (engine_socket!==null){
+        var sends = []
         for (var i=0; i<made_moves.length;i++){
             color = made_moves[i][0]
             move = made_moves[i][1];
             if (color=="undo"){
                 for (var j=0; j<move;j++){
-                    engine_socket.send("undo")
+                    sends.push("undo")
                 }
             }
             else if (color=="reset"){
-                engine_socket.send("clear_board")
+                sends.push("clear_board")
             }
             else{
-                engine_socket.send("play "+color+" "+move)
+                sends.push("play "+color+" "+move)
             }
         }
-        setTimeout(function(){ 
-            console.log("sending kata-analyze");
-            engine_socket.send("kata-analyze interval 300");
-        }, 200);
-        
+        sends.push("kata-analyze interval 300");
+        sendchain(sends)
     }
 }
 
