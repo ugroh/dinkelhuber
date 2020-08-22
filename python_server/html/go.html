@@ -186,8 +186,11 @@ function websocket_handle_made_moves(made_moves){
                 engine_socket.send("play "+color+" "+move)
             }
         }
-        console.log("sending kata-analyze")
-        engine_socket.send("kata-analyze interval 500")
+        setTimeout(function(){ 
+            console.log("sending kata-analyze");
+            engine_socket.send("kata-analyze interval 300");
+        }, 200);
+        
     }
 }
 
@@ -611,7 +614,6 @@ function show_engine_eval(eval_arr){
             continue;
         }
         let pos = [start+move_off*meval["move"][0],start+move_off*meval["move"][1]]
-        console.log(redstart,redmove,greenstart,greenmove)
         if (i==0){var color = "rgba(66, 155, 245, 0.8)"}
         else if (i<=greens){var color = "rgba(66, 245, 90, "+(0.8+(meval.visits-greenstart)*greenmove)+")"}
         else {var color = "rgb(181, 43, 43,"+(0.5+(meval.visits-redstart)*redmove)+")"}
