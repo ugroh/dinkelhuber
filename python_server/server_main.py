@@ -61,18 +61,30 @@ class Stuff_handler():
                 if data["request"] == "settings":
                     return_data = {"settings":self.settings}
             else:
+                return_data = {}
                 if "game_sgf" in data:
                     new_game = load_sgf(data["game_sgf"])
-                    self.game = sync_to_equal_move(self.game,new_game)
-                if "revert" in data:
-                    self.game.revert_move(data["revert"])
+                    self.game,made_moves = sync_to_equal_move(self.game,new_game)
+                    return_data["made_moves"] = self.game.convert_gtp_readable(made_moves)
+                elif "reset" in data:
+                    self.game.reset()
+                    return_data["made_moves"] = [["reset",True]]
+                elif "revert" in data:
+                    reverted = self.game.revert_move(data["revert"])
+                    return_data["made_moves"] = [["undo",reverted]]
                 elif "forward" in data:
-                    success = self.game.forward(data["forward"])
-                    if not success:
-                        self.game.make_move(tuple(self.moves_with_data[0]["move"]))
+                    made_moves = self.game.forward(data["forward"])
+                    if made_moves:
+                        return_data["made_moves"] = self.game.convert_gtp_readable(made_moves)
+                    else:
+                        move = tuple(self.moves_with_data[0]["move"])
+                        return_data["made_moves"] = self.game.convert_gtp_readable([[self.game.onturn,move]])
+                        self.game.make_move(move)
                 elif "move" in data:
-                    self.game.make_move(tuple(data["move"]))
-                if "settings" in data:
+                    move = tuple(data["move"])
+                    return_data["made_moves"] = self.game.convert_gtp_readable([[self.game.onturn,move]])
+                    self.game.make_move(move)
+                elif "settings" in data:
                     self.settings = data["settings"]
                     self.book_handler.change_settings(self.settings)
                 moves_with_hash = self.game.get_next_hashes()
@@ -80,11 +92,12 @@ class Stuff_handler():
                 self.moves_with_data.sort(key=lambda x:-(x["white_wins"]+x["black_wins"]))
                 cur_info = self.book_handler.lookup_hash(self.game.do_hash(),with_games_tuples=True)
                 print(self.game)
-                return_data = {
+                return_data.update({
                     "position": [x.tolist() for x in self.game.position],
                     "moves": self.moves_with_data,
-                    "pos_info":cur_info
-                }
+                    "pos_info":cur_info,
+                    "onturn":self.game.onturn
+                })
         return [json.dumps(return_data).encode()]
 
 def application(environ, start_response):

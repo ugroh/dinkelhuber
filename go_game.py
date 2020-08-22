@@ -39,7 +39,7 @@ class Go_game():
         self.zobrist = zobrist
         self.reset()
         self.hash = self.do_hash()
-        self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash)]
+        self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash,None)]
     def reset(self):
         self.position = [np.zeros((self.size,self.size),dtype=bool),np.zeros((self.size,self.size),dtype=bool)]
         self.onturn = False
@@ -53,22 +53,35 @@ class Go_game():
                 self.position[0][row][col] = True if symbol=="B" else False
                 self.position[1][row][col] = True if symbol=="W" else False
 
+    def convert_gtp_readable(self,color_with_moves):
+        staben = "abcdefghi"
+        out = []
+        for color,move in color_with_moves:
+            out.append(["white" if color else "black", staben[move[0]]+str(9-move[1]) if move else "pass"])
+        return out
+
     def revert_move(self,amount=1):
+        orig_hist_index = self.hist_index
         self.hist_index-=amount
         if self.hist_index < 0:
             self.hist_index = 0
-        pos, self.onturn, self.hash = self.history[self.hist_index]
+        pos, self.onturn, self.hash, _move = self.history[self.hist_index]
         self.position = [pos[0].copy(),pos[1].copy()]
+        return orig_hist_index-self.hist_index
 
     def forward(self,amount=1):
+        out = []
+        orig_hist_index = self.hist_index
         self.hist_index+=amount
         if self.hist_index >= len(self.history):
             self.hist_index = len(self.history)-1
             if amount==1:
-                return False
-        pos, self.onturn, self.hash = self.history[self.hist_index]
+                return []
+        for h in self.history[orig_hist_index+1:self.hist_index+1]:
+            out.append([not h[1],h[3]])
+        pos, self.onturn, self.hash,_move = self.history[self.hist_index]
         self.position = [pos[0].copy(),pos[1].copy()]
-        return True
+        return out
 
     def make_move(self,move):
         if move:
@@ -78,7 +91,7 @@ class Go_game():
         self.hash = self.do_hash()
         self.hist_index+=1
         self.history = self.history[:self.hist_index]
-        self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash))
+        self.history.append(([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash,move))
 
     def get_legal_moves(self):
         besetztos = np.logical_or(self.position[0],self.position[1])

@@ -5,3 +5,5 @@ __pycache__/
 .vscode/
 books/
 start_server.sh
+katago/
+gtp_logs/

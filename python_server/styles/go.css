@@ -21,7 +21,7 @@ body{
     z-index: 2;
 }
 
-.game_id_field{
+.pair input{
     background: #262421;
     color: #ccc;
     border: 1px solid #404040;
@@ -29,6 +29,7 @@ body{
     outline-color: #3692e7;
     border-radius: 3px;
     margin-left:.8em;
+    width:60%;
     flex: 1 1 auto;
 }
 .pair{
@@ -39,8 +40,8 @@ body{
     flex-flow: row wrap;
     white-space: nowrap; 
 }
-.game_id_text{
+.pair label{
     font-weight: bold;
     color: #999;
-    flex: 0 0 5ch;
+    flex: 0 0 10ch;
 }

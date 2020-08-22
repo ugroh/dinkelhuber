@@ -18,6 +18,8 @@
                     <div id="go_board">
                         <canvas id="board_cv" class="canvas" width="800" height="800"></canvas>
                         <canvas id="stone_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="eval_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="pv_cv" class="canvas" width="800" height="800" style="z-index:5"></canvas>
                     </div>
                     <div class="action-bar">
                         <span class="icons"></span>
@@ -50,6 +52,10 @@
           <div class="pair">
                 <label class="game_id_text">Game ID</label>
                 <input id="Game_ID" type="text" name="Game_ID" class="game_id_field"/>
+          </div>
+          <div class="pair">
+            <label class="engine_text">GTP Engine</label>
+            <input id="websocket" type="text" class="game_id_field"/>
           </div>
        </div>
     </main>
@@ -112,8 +118,12 @@ const stone_size = 74;
 var mode = "explorer";
 var settings_changed = false
 var settings = [['kyu','dan'],['lower','5.5','higher'],["Japanese","Chinese"]];
-
+var engine_socket = null;
+var engine_eval = null;
 var position = [[],[]];
+var onturn = null;
+var cur_pv = [];
+var cur_hover = null;
 for (var i = 0; i < 9;i++){
     position[0].push(new Array(9).fill(false));
     position[1].push(new Array(9).fill(false));
@@ -130,6 +140,10 @@ const board_canvas = document.getElementById("board_cv");
 const board_ctx = board_canvas.getContext("2d");
 const stone_canvas = document.getElementById("stone_cv");
 const stone_ctx = stone_canvas.getContext("2d");
+const eval_canvas = document.getElementById("eval_cv");
+const eval_ctx = eval_canvas.getContext("2d");
+const pv_canvas = document.getElementById("pv_cv");
+const pv_ctx = pv_canvas.getContext("2d");
 
 board_ctx.lineStyle = "#000000";
 board_ctx.fillStyle = "#333333";
@@ -154,6 +168,70 @@ for (var i in dot_poses) {
     board_ctx.closePath();
     board_ctx.fill();
 }
+
+function websocket_handle_made_moves(made_moves){
+    if (engine_socket!==null){
+        for (var i=0; i<made_moves.length;i++){
+            color = made_moves[i][0]
+            move = made_moves[i][1];
+            if (color=="undo"){
+                for (var j=0; j<move;j++){
+                    engine_socket.send("undo")
+                }
+            }
+            else if (color=="reset"){
+                engine_socket.send("clear_board")
+            }
+            else{
+                engine_socket.send("play "+color+" "+move)
+            }
+        }
+        console.log("sending kata-analyze")
+        engine_socket.send("kata-analyze interval 500")
+    }
+}
+
+function websocket_handler(e){
+    let message = e.data;
+    message = message.substring(2,message.length-1)
+
+    if (message.startsWith("info move")){
+        let moves = message.split("info ").slice(1,)
+        engine_eval = []
+
+        for (var i = 0; i < moves.length;i++){
+            let minfo_parts = moves[i].split(" ")
+            let meval = {}
+            meval["move"] = convert_machine_readable(minfo_parts[1])
+            meval["visits"] = parseInt(minfo_parts[3])
+            meval["winrate"] = parseFloat(minfo_parts[7])
+            meval["score_mean"] = parseFloat(minfo_parts[9])
+            meval["score_std"] = parseFloat(minfo_parts[11])
+            meval["pv"] = minfo_parts.slice(25).map(x=>convert_machine_readable(x))
+            engine_eval.push(meval)
+        }
+        show_engine_eval(engine_eval);
+        cur_hover=null;
+    }
+}
+
+document.getElementById("websocket").addEventListener("keydown",function(e){
+    if (e.keyCode==13){
+        var connection = new WebSocket('ws://'+document.getElementById("websocket").value, ['soap', 'xmpp']);
+        connection.onerror = function (error) {
+            console.log(error);
+        }
+        connection.onopen = function () {
+            engine_socket = connection
+            xml_http_post("html/go.html",{"reset":true},handle_server_data)
+            engine_socket.onmessage = websocket_handler
+            engine_socket.onclose = function(){
+                console.log("connection closed")
+                engine_socket=null;
+            }
+        };
+    }
+})
 
 document.getElementById("Game_ID").addEventListener("keydown",function(e){
     if (e.keyCode==13){
@@ -309,7 +387,15 @@ function handle_server_data(data){
         show_selected_settings(settings);
         return
     }
-    console.log(data)
+    if ("made_moves" in data){
+        websocket_handle_made_moves(data["made_moves"]);
+        eval_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+        pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+        engine_eval=null;
+    }
+    if ("onturn" in data){
+        onturn = data["onturn"];
+    }
     show_top_games(data["pos_info"]["games_tuples"])
     set_aval_moves(data["moves"])
     transform_into_position(position,data["position"])
@@ -354,7 +440,7 @@ function show_top_games(game_infos){
     }
 }
 
-stone_canvas.addEventListener("mousedown",function(e){
+pv_canvas.addEventListener("mousedown",function(e){
   var orig_width = parseInt(this.getAttribute("width"))
   var rect = e.target.getBoundingClientRect();
   var rescalo = orig_width/rect.width
@@ -368,6 +454,63 @@ stone_canvas.addEventListener("mousedown",function(e){
   }
   xml_http_post("html/go.html",{"move":[row,column]},handle_server_data)
 })
+
+pv_canvas.addEventListener("mousemove",function(e){
+    if (engine_eval!==null){
+        var orig_width = parseInt(this.getAttribute("width"))
+        var rect = e.target.getBoundingClientRect();
+        var rescalo = orig_width/rect.width
+        var x = (e.clientX - rect.left)*rescalo-start;
+        var y = (e.clientY - rect.top)*rescalo-start;
+        var row = parseInt((x+move_off/2)/move_off);
+        var column = parseInt((y+move_off/2)/move_off);
+        var did_sth = false;
+        for (var i = 0; i < engine_eval.length;i++){
+            if (engine_eval[i]["move"][0]==row&&engine_eval[i]["move"][1]==column){
+                if (cur_hover==null||(row!=cur_hover[0]||column!=cur_hover[1])){
+                    cur_hover = [row,column];
+                    show_pv(engine_eval[i]["pv"]);
+                }
+                did_sth = true;
+            }
+        }
+        if (!did_sth){
+            if (cur_hover!=null){
+                cur_hover=null;
+                cur_pv = [];
+                show_engine_eval(engine_eval);
+                pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+            }
+        }
+    }
+})
+
+function show_pv(pv){
+    cur_pv = pv;
+    show_engine_eval(engine_eval);
+    pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+    pv_ctx.font = "25px Arial";
+    pv_ctx.textBaseline = "middle"; 
+    pv_ctx.textAlign = "center";
+    var inner_onturn = onturn
+    for (var i = 0; i <pv.length;i++){
+        var move = pv[i]
+        var pos = [start+move_off*(move[0]), start+move_off*(move[1])]
+        pv_ctx.save();
+        pv_ctx.globalAlpha = 0.8;
+        if (inner_onturn){
+            pv_ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+        }
+        else{
+            pv_ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+        }
+        pv_ctx.fillStyle = inner_onturn?"black":"white";
+        pv_ctx.fillText(i+1,pos[0],pos[1]);
+        pv_ctx.restore();
+        eval_ctx.clearRect(pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size);
+        inner_onturn = !inner_onturn;
+    }
+}
 
 function convert_human_readable(move){
     if (move.length==0){
@@ -440,6 +583,54 @@ function set_aval_moves(moves){
         bar_div.appendChild(black_span)
     }
 }
+
+function show_engine_eval(eval_arr){
+    eval_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+    var best_visits = eval_arr[0]["visits"]
+    var greens = 4
+    if (eval_arr.length>1){
+        var greenstart = eval_arr[1]["visits"]
+        var greenlast = eval_arr[Math.min(eval_arr.length-1,greens)]["visits"]
+        var greenmove = greenstart>greenlast?(1/(greenstart-greenlast))*0.3:0
+    }
+    if (eval_arr.length>greens+1){
+        var redstart = eval_arr[greens+1]["visits"]
+        var redlast = eval_arr[eval_arr.length-1]["visits"]
+        var redmove = redstart>redlast?(1/(redstart-redlast))*0.4:0
+    }
+    for (var i = 0; i < eval_arr.length;i++){
+        let meval = eval_arr[i]
+        cont = false;
+        for (var j = 0; j < cur_pv.length;j++){
+            if (meval["move"][0]==cur_pv[j][0]&&meval["move"][1]==cur_pv[j][1]){
+                cont = true;
+                break;
+            }
+        }
+        if (cont){
+            continue;
+        }
+        let pos = [start+move_off*meval["move"][0],start+move_off*meval["move"][1]]
+        console.log(redstart,redmove,greenstart,greenmove)
+        if (i==0){var color = "rgba(66, 155, 245, 0.8)"}
+        else if (i<=greens){var color = "rgba(66, 245, 90, "+(0.8+(meval.visits-greenstart)*greenmove)+")"}
+        else {var color = "rgb(181, 43, 43,"+(0.5+(meval.visits-redstart)*redmove)+")"}
+        eval_ctx.beginPath();
+        eval_ctx.arc(pos[0],pos[1], stone_size/2, 0, 2 * Math.PI);
+        eval_ctx.fillStyle = color;
+        eval_ctx.fill();
+        eval_ctx.strokeStyle = onturn?"#000":"#fff";
+        eval_ctx.stroke();
+        if (i<5){
+            eval_ctx.font = "25px Arial";
+            eval_ctx.fillStyle = "black";
+            eval_ctx.textAlign = "center"; 
+            eval_ctx.textBaseline = "middle"; 
+            eval_ctx.fillText((Math.round(meval.winrate*1000)/10)+"", pos[0], pos[1]);
+        }
+    }
+}
+
 function make_move(move,color){
     pos = [start+move_off*(move[0]), start+move_off*(move[1])]
     if (color){

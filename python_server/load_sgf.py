@@ -18,14 +18,17 @@ def load_sgf(sgf):
 def sync_to_equal_move(old_game, new_game):
     old_game.revert_move(amount=100)
     new_game.revert_move(amount=100)
+    moves = []
     while 1:
         if not (np.array_equal(old_game.position[0],new_game.position[0]) and np.array_equal(old_game.position[1],new_game.position[1])):
             new_game.revert_move(amount=1)
             break
         worked_old = old_game.forward(1) 
         worked_new = new_game.forward(1)
+        moves.append(worked_new[0])
         if not (worked_old and worked_new):
             if worked_new:
                 new_game.revert_move(amount=1)
+                moves.pop()
             break
-    return new_game
+    return new_game,moves
