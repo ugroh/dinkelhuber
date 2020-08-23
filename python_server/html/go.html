@@ -148,7 +148,7 @@ const pv_ctx = pv_canvas.getContext("2d");
 board_ctx.lineStyle = "#000000";
 board_ctx.fillStyle = "#333333";
 board_ctx.font = "bold 35px Arial";
-letters = ["A","B","C","D","E","F","G","H","I"]
+letters = ["A","B","C","D","E","F","G","H","J"]
 for (var i = 0; i < 9;i+=1){
     pos = start+move_off*i
     board_ctx.moveTo(pos, start);
@@ -527,12 +527,12 @@ function convert_human_readable(move){
     if (move.length==0){
         return "pass"
     }
-    move_letters = "ABCDEFGHI"
+    move_letters = "ABCDEFGHJ"
     return move_letters[move[0]]+(9-move[1])
 }
 
 function convert_machine_readable(move_str){
-    move_letters = "ABCDEFGHI"
+    move_letters = "ABCDEFGHJ"
     if (move_str == "pass"){
         return []
     }

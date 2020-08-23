@@ -54,7 +54,7 @@ class Go_game():
                 self.position[1][row][col] = True if symbol=="W" else False
 
     def convert_gtp_readable(self,color_with_moves):
-        staben = "abcdefghi"
+        staben = "abcdefghj"
         out = []
         for color,move in color_with_moves:
             out.append(["white" if color else "black", staben[move[0]]+str(9-move[1]) if move else "pass"])
