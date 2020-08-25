@@ -102,7 +102,7 @@ class Stuff_handler():
             return_data = {}
             if "game_sgf" in data:
                 new_game = load_sgf(data["game_sgf"])
-                self.game,made_moves = sync_to_equal_move(self.game[go_id],new_game)
+                self.game[go_id],made_moves = sync_to_equal_move(self.game[go_id],new_game)
                 return_data["made_moves"] = [["reset",True]]+self.game[go_id].convert_gtp_readable(made_moves)
             elif "reset" in data:
                 self.game[go_id].reset()
