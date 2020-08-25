@@ -41,7 +41,7 @@ def on_connection_close(client):
 def on_data_receive(client, data):
     p.sendline(data)
 
-server = WebSocketServer(ip="192.168.188.22", port=8030,
+server = WebSocketServer(ip="localhost", port=8030,
                          on_data_receive=on_data_receive,
                          on_connection_open=on_connection_open,
                          on_connection_close = on_connection_close)
