@@ -3,7 +3,7 @@ from sqlitedict import SqliteDict
 import time
 
 class Book_lookupper():
-    def __init__(self,settings):
+    def __init__(self):
         self.books = {
             "dan":{
                 "lower":{
@@ -34,44 +34,12 @@ class Book_lookupper():
                 }
             }
         }
-        self.change_settings(settings)
 
-    def merge_books(self,books):
-        keys = set(sum([list(book.keys()) for book in books], []))
-        new_book = dict()
-        for key in keys:        
-            white_wins = 0
-            black_wins = 0
-            rating = None
-            num_games = 0
-            for book in books:
-                if key in book:
-                    white_wins += book[key][0]
-                    black_wins += book[key][1]
-                    inner_games = book[key][0]+book[key][1]
-                    num_games+=inner_games
-                    if rating is None:
-                        rating = book[key][2]
-                    else:
-                        rating = (rating + (inner_games/num_games)*book[key][2])/(1+(inner_games/num_games))
-            new_book[key] = np.array([white_wins, black_wins, rating])
-        return new_book
-
-    def change_settings(self, settings):
-        self.settings = settings
-        self.cur_books = [self.books]
-        for setting in self.settings:
-            new_layer = []
-            for book in self.cur_books:
-                for ok_val in setting:
-                    new_layer.append(book[ok_val])
-            self.cur_books = new_layer
-
-    def lookup_hash(self,myhash,with_games_tuples=True):
+    def lookup_hash(self,myhash,cur_books,with_games_tuples=True):
         cum_info = {"black_wins":0,"white_wins":0,"rating":0}
         if with_games_tuples:
             cum_info["games_tuples"] = []
-        for book in self.cur_books:
+        for book in cur_books:
             try:
                 entry = book[myhash]
             except:
@@ -88,11 +56,32 @@ class Book_lookupper():
             cum_info["games_tuples"].sort(key=lambda x:-x[0])
         return cum_info
 
-    def lookup_moves(self,moves_with_hash):
+    def lookup_moves(self,moves_with_hash,cur_books):
         moves_with_data = []
         for move,myhash in moves_with_hash:
-            cum_info = self.lookup_hash(myhash,with_games_tuples=False)
+            cum_info = self.lookup_hash(myhash,cur_books,with_games_tuples=False)
             if cum_info["black_wins"]>0 or cum_info["white_wins"]>0:
                 cum_info["move"] = move
                 moves_with_data.append(cum_info)
         return moves_with_data
+
+class Lookup_api():
+    def __init__(self,settings,book_lookupper):
+        self.lookupper = book_lookupper
+        self.change_settings(settings)
+
+    def change_settings(self, settings):
+        self.settings = settings
+        self.cur_books = [self.lookupper.books]
+        for setting in self.settings:
+            new_layer = []
+            for book in self.cur_books:
+                for ok_val in setting:
+                    new_layer.append(book[ok_val])
+            self.cur_books = new_layer
+
+    def lookup_hash(self,myhash,with_games_tuples=True):
+        return self.lookupper.lookup_hash(myhash,self.cur_books,with_games_tuples=True)
+    
+    def lookup_moves(self,moves_with_hash):
+        return self.lookupper.lookup_moves(moves_with_hash,self.cur_books)

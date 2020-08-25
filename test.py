@@ -19,6 +19,7 @@ game.set_pos_from_str("""
 #     WW  #
 #         #
 ###########""")
+game.onturn = True
 print(mydict[118966001714952367])
 print(118966001714952367,game.do_hash())
 print(game)

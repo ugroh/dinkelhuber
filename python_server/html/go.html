@@ -57,6 +57,10 @@
             <label class="engine_text">GTP Engine</label>
             <input id="websocket" type="text" class="game_id_field"/>
           </div>
+          <div class="pair">
+            <button onclick='location.href="http://yannikkeller.de"' class="glow-on-hover"><img src="http://yannikkeller.de/favicon.ico" width="25" height="25">Main page</button>
+            <button onclick='href="https://github.com/yannikkellerde/go_opening_explorer"' class="glow-on-hover"> <img src="https://github.com/favicon.ico" width="25" height="25"> Github</button>
+          </div>
        </div>
     </main>
  </div> 
@@ -330,7 +334,7 @@ function xml_http_post(url, data, callback) {
     if (waiting_for_server){
         return
     }
-    data["password"]=password
+    data["go_id"]=go_id
     req = new XMLHttpRequest();
     req.open("POST", url, true);
     req.onreadystatechange = function() {
@@ -380,14 +384,8 @@ function transform_into_position(old_pos,new_pos){
 }
 
 function handle_server_data(data){
-    if ("password" in data && data["password"]=="wrong"){
-        eraseCookie("password")
-        alert("WRONG password")
-        location.reload();
-        return
-    }
     if (first_data_from_server){
-        setCookie("password",password,5);
+        setCookie("go_id",go_id,5);
     }
     if ("settings" in data){
         settings = data["settings"];
@@ -680,9 +678,10 @@ function eraseCookie(name) {
 }
 
 var first_data_from_server = true;
-var password = getCookie("password");
-if (password==null || password.length==0){
-    password = prompt("Enter the super secret password to be extra secret");
+var go_id = getCookie("go_id");
+if (go_id==null || go_id.length==0){
+    console.log("generating new go_id")
+    go_id = Math.random().toString(36).substr(2, 9)
 }
 xml_http_post("html/go.html",{},handle_server_data)
 document.getElementById("explorer-box").innerHTML = explorer_html
