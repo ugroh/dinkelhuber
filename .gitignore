@@ -7,3 +7,4 @@ books/
 start_server.sh
 katago/
 gtp_logs/
+visits.txt
