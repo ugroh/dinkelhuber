@@ -134,7 +134,8 @@ class Stuff_handler():
                 "position": [x.tolist() for x in self.game[go_id].position],
                 "moves": self.moves_with_data,
                 "pos_info":cur_info,
-                "onturn":self.game[go_id].onturn
+                "onturn":self.game[go_id].onturn,
+                "movenum":self.game[go_id].hist_index
             })
         return [json.dumps(return_data).encode()]
 

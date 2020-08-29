@@ -98,33 +98,33 @@ def extract_a_game(game,filepath,book,gid,max_half_moves=20):
     with open(filepath,'r') as f:
         lines = f.read().splitlines()
     for line in lines:
-        if line.startswith("BR"):
+        if line.startswith("BR["):
             game_info["black_rating"] = convert_kyu_to_num(extract_val(line))
-        elif line.startswith("WR"):
+        elif line.startswith("WR["):
             game_info["white_rating"] = convert_kyu_to_num(extract_val(line))
-        elif line.startswith("PB"):
+        elif line.startswith("PB["):
             game_info["player_black"] = extract_val(line)
-        elif line.startswith("PW"):
+        elif line.startswith("PW["):
             game_info["player_white"] = extract_val(line)
-        elif line.startswith("DT"):
+        elif line.startswith("DT["):
             game_info["year"] = extract_val(line).split("-")[0]
-        elif line.startswith("RE"):
+        elif line.startswith("RE["):
             if "W" in line:
                 game_info["winner"] = "W"
             else:
                 game_info["winner"] = "B"
-        elif line.startswith("PC"):
+        elif line.startswith("PC["):
             game_info["ogs_link"] = extract_val(line).replace("OGS: ","")
-        elif line.startswith("SZ"):
+        elif line.startswith("SZ["):
             if int(extract_val(line))!=9:
                 logger.warn("{}: Invalid board size: {}".format(gid,line))
                 return False
-        elif line.startswith("HA") or line.startswith("AB"):
+        elif line.startswith("HA[") or line.startswith("AB"):
             logger.debug("{}: Invalid game, contains handicap".format(gid))
             return False
-        elif line.startswith("KM"):
+        elif line.startswith("KM["):
             komi = float(extract_val(line))
-        elif line.startswith("RU"):
+        elif line.startswith("RU["):
             rules = extract_val(line)
         elif usebook is None and line.startswith(";B"):
             if not "winner" in game_info:
@@ -184,7 +184,7 @@ def create_book(gamefol="games"):
     failed_num = 0
     pid_num = 0
     num_players = len(os.listdir(gamefol))
-    for player_id in os.listdir(gamefol):
+    for player_id in tqdm(os.listdir(gamefol)):
         logger.info("extracting from pid: {}".format(player_id))
         path = os.path.join(gamefol, player_id)
         for game in tqdm(os.listdir(path)):

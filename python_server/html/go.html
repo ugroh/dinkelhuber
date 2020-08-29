@@ -120,6 +120,7 @@ const fin = 700;
 const move_off = (fin-start)/8;
 const stone_size = 74;
 var mode = "explorer";
+var movenum = 0;
 var settings_changed = false
 var settings = [['kyu','dan'],['lower','5.5','higher'],["Japanese","Chinese"]];
 var engine_socket = null;
@@ -405,6 +406,9 @@ function handle_server_data(data){
     if ("onturn" in data){
         onturn = data["onturn"];
     }
+    if ("movenum" in data){
+        movenum = data["movenum"];
+    }
     show_top_games(data["pos_info"]["games_tuples"])
     set_aval_moves(data["moves"])
     transform_into_position(position,data["position"])
@@ -412,15 +416,13 @@ function handle_server_data(data){
 }
 
 function show_top_games(game_infos){
-    //<tr data-id="jYSkjcuG"><td><span>2882</span><span>2818</span></td><td><span>Carlsen, M.</span><span>Caruana, F.</span></td><td><result class="draws">½-½</result></td><td>2019</td></tr><tr data-id="QR5UbqUY"><td><span>2882</span><span>2818</span></td><td><span>Carlsen, M.</span><span>Caruana, F.</span></td><td><result class="draws">½-½</result></td><td>2019</td></tr><tr data-id="boLujJkB"><td><span>2818</span><span>2882</span></td><td><span>Caruana, F.</span><span>Carlsen, M.</span></td><td><result class="white">1-0</result></td><td>2019</td></tr><tr data-id="Sxov6E94"><td><span>2818</span><span>2882</span></td><td><span>Caruana, F.</span><span>Carlsen, M.</span></td><td><result class="white">1-0</result></td><td>2019</td></tr>
-    //0: avg_rating, 1: ogs link, 2: black name, 3: white name, 4: black rating, 5: white rating, 6: winner, 7: year
     var gb = document.getElementById("games_body");
     gb.innerHTML = "";
     for (var i = 0;i<game_infos.length;i++){
         let gi = game_infos[i];
         let tr = document.createElement("tr");
         gb.appendChild(tr);
-        tr.setAttribute("onmousedown","window.open('"+gi[1]+"','_blank');")
+        tr.setAttribute("onmousedown","window.open('"+gi[1]+"/"+movenum+"','_blank');")
         let rating_td = document.createElement("td");
         tr.appendChild(rating_td);
         let brating = document.createElement("span");
