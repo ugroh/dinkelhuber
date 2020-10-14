@@ -1,5 +1,6 @@
-import sys
-sys.path.append("..")
+import sys,os
+basepath = os.path.abspath(os.path.dirname(__file__))
+sys.path.append(os.path.join(basepath,".."))
 from go_game import Go_game,Rotater
 from sqlitedict import SqliteDict
 from book_lookup import Book_lookupper,Lookup_api
@@ -8,10 +9,10 @@ import numpy as np
 import webbrowser
 import threading
 import json
-import os
 from datetime import datetime, timedelta
 from load_sgf import load_sgf, sync_to_equal_move
 from urllib.parse import parse_qs
+
 
 def path_is_parent(parent_path, child_path):
     # Smooth out relative path names, note: if you are concerned about symbolic links, you should use os.path.realpath too
@@ -21,54 +22,29 @@ def path_is_parent(parent_path, child_path):
     # Compare the common path of the parent and child path with the common path of just the parent path. Using the commonpath method on just the parent path will regularise the path name in the same way as the comparison that deals with both paths, removing any trailing path separator
     return os.path.commonpath([parent_path]) == os.path.commonpath([parent_path, child_path])
 
-class Stuff_handler():
+class Go_handler():
     def __init__(self):
-        self.ending_to_content_type = {
-            "/":"text/html",
-            "html": "text/html",
-            "css": "text/css",
-            "png": "image/png",
-            "jpg": "image/jpeg",
-            "jpeg": "image/jpeg",
-            "json": "application/json"
-        }
         self.id_expiration = {}
         self.settings = {}
         self.game = {}
         self.lookup_api = {}
-        self.zobrist = np.load("binfiles/zobrist.npy")
+        self.zobrist = np.load(os.path.join(basepath,"binfiles/zobrist.npy"))
         self.book_handler = Book_lookupper()
         self.read_visits()
 
     def read_visits(self):
         try:
-            with open("visits.txt","r") as f:
+            with open(os.path.join(basepath,"visits.txt"),"r") as f:
                 lines = f.read.splitlines()
                 self.visits = int(lines[0].split(": ")[1])
                 self.individual_visits = int(lines[1].split(": ")[1])
         except:
             self.individual_visits = 0
             self.visits = 0
-
+    
     def write_visits(self):
-        with open("visits.txt", "w") as f:
+        with open(os.path.join(basepath,"visits.txt"), "w") as f:
             f.write(f"visits: {self.visits}\nindividual visits: {self.individual_visits}")
-
-    def handle_get(self,uri):
-        print("Received get request")
-        if uri=="/":
-            uri = "/html/go.html"
-        try:
-            if not path_is_parent(".",uri[1:]):
-                return "NOT FOUND"
-            with open(uri[1:],"r") as f:
-                my_content = f.read().encode()
-        except FileNotFoundError:
-            return "NOT FOUND"
-        except UnicodeDecodeError as e:
-            with open(uri[1:],"rb") as f:
-                my_content = f.read()
-        return [my_content]
 
     def expire_ids(self):
         today = datetime.now()
@@ -138,22 +114,3 @@ class Stuff_handler():
                 "movenum":self.game[go_id].hist_index
             })
         return [json.dumps(return_data).encode()]
-
-def application(environ, start_response):
-    global handler
-    try:  # This is disgusting!
-        handler
-    except:
-        print("Creating the handler")
-        handler = Stuff_handler()
-    uri = environ["REQUEST_URI"]
-    if environ["REQUEST_METHOD"] == "GET":
-        out = handler.handle_get(uri)
-    elif environ["REQUEST_METHOD"] == "POST":
-        post_input = json.loads(environ['wsgi.input'].readline().decode())
-        out = handler.handle_post(post_input)
-    if out == "NOT FOUND":
-        start_response('404 NOT FOUND', [('Content-Type',"text/html")])
-        return [b"404 NOT FOUND"]
-    start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
-    return out
