@@ -1,4 +1,5 @@
 import sys,os
+import json
 go_path = "."
 qango_path = "."
 sys.path.append(go_path)
@@ -49,7 +50,7 @@ class Stuff_handler():
         return [my_content]
 
     def handle_post(self,data):
-        self.go_handler.handle_post(data)
+        return self.go_handler.handle_post(data)
 
 def application(environ, start_response):
     global handler
@@ -68,5 +69,9 @@ def application(environ, start_response):
     if out == "NOT FOUND":
         start_response('404 NOT FOUND', [('Content-Type',"text/html")])
         return [b"404 NOT FOUND"]
-    start_response('200 OK', [('Content-Type',handler.ending_to_content_type[uri.split(".")[-1]])])
+    if uri.split(".")[-1] in handler.ending_to_content_type:
+        ct = handler.ending_to_content_type[uri.split(".")[-1]]
+    else:
+        ct = "text/plain"
+    start_response('200 OK', [('Content-Type',ct)])
     return out
