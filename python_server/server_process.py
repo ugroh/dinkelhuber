@@ -1,4 +1,4 @@
-import sys
+import sys,os
 go_path = "."
 qango_path = "."
 sys.path.append(go_path)
@@ -6,6 +6,14 @@ sys.path.append(qango_path)
 from go_handler import Go_handler
 from qango_handler import Qango_handler
 from urllib.parse import parse_qs
+
+def path_is_parent(parent_path, child_path):
+    # Smooth out relative path names, note: if you are concerned about symbolic links, you should use os.path.realpath too
+    parent_path = os.path.abspath(parent_path)
+    child_path = os.path.abspath(child_path)
+
+    # Compare the common path of the parent and child path with the common path of just the parent path. Using the commonpath method on just the parent path will regularise the path name in the same way as the comparison that deals with both paths, removing any trailing path separator
+    return os.path.commonpath([parent_path]) == os.path.commonpath([parent_path, child_path])
 
 class Stuff_handler():
     def __init__(self):
@@ -27,15 +35,16 @@ class Stuff_handler():
             uri = "/html/go.html"
         elif uri.startswith("/qango"):
             return self.qango_handler(uri,query)
+        path = os.path.join(go_path,uri[1:])
         try:
-            if not path_is_parent(go_path,uri[1:]):
+            if not path_is_parent(go_path,path):
                 return "NOT FOUND"
-            with open(os.path.join(go_path,uri[1:]),"r") as f:
+            with open(path,"r") as f:
                 my_content = f.read().encode()
         except FileNotFoundError:
             return "NOT FOUND"
         except UnicodeDecodeError as e:
-            with open(os.path.join(go_path,uri[1:]),"rb") as f:
+            with open(path,"rb") as f:
                 my_content = f.read()
         return [my_content]
 
