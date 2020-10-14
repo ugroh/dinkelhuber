@@ -1,36 +1,38 @@
 import numpy as np
 from sqlitedict import SqliteDict
 import time
+import os,sys
+basepath = os.path.abspath(os.path.dirname(__file__))
 
 class Book_lookupper():
     def __init__(self):
         self.books = {
             "dan":{
                 "lower":{
-                    "Japanese":SqliteDict("./books/dan_lower_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/dan_lower_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/dan_lower_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/dan_lower_Chinese.sqlite"))
                 },
                 "5.5":{
-                    "Japanese":SqliteDict("./books/dan_5.5_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/dan_5.5_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/dan_5.5_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/dan_5.5_Chinese.sqlite"))
                 },
                 "higher":{
-                    "Japanese":SqliteDict("./books/dan_higher_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/dan_higher_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/dan_higher_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/dan_higher_Chinese.sqlite"))
                 }
             },
             "kyu":{
                 "lower":{
-                    "Japanese":SqliteDict("./books/kyu_lower_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/kyu_lower_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_lower_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_lower_Chinese.sqlite"))
                 },
                 "5.5":{
-                    "Japanese":SqliteDict("./books/kyu_5.5_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/kyu_5.5_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_5.5_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_5.5_Chinese.sqlite"))
                 },
                 "higher":{
-                    "Japanese":SqliteDict("./books/kyu_higher_Japanese.sqlite"),
-                    "Chinese":SqliteDict("./books/kyu_higher_Chinese.sqlite")
+                    "Japanese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_higher_Japanese.sqlite")),
+                    "Chinese":SqliteDict(os.path.join(basepath,"python_server","books/kyu_higher_Chinese.sqlite"))
                 }
             }
         }
