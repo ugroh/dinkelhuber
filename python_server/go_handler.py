@@ -26,7 +26,7 @@ class Go_handler():
     def handle_get(self,uid):
         user = Go_user.query.filter_by(uid=uid).first()
         if user is not None:
-            user.last_access = int(time.time)
+            user.last_access = int(time.time())
             db.session.commit()
         self.expire_ids()
         return render_template("go.html")
