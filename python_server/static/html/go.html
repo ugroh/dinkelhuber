@@ -1,0 +1,683 @@
+<head>
+    <link rel="stylesheet" href="/go_static/styles/go.css">
+    <link rel="stylesheet" href="/go_static/styles/explorer_box.css">
+    <link rel="stylesheet" href="/go_static/styles/new_try_css.css">
+    <meta charset="utf-8"/>
+    <title>Go 9x9 Opening Explorer</title>
+</head>
+<body>
+    
+
+<div id="main-wrap" class="is2d">
+    <main class="analyse variant-standard gauge-on">
+       <div class="analyse__board main-board">
+          <div class="cg-wrap cgv1 orientation-white manipulable">
+             <cg-helper>
+                <cg-container>
+                   <cg-board>
+                    <div id="go_board">
+                        <canvas id="board_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="stone_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="eval_cv" class="canvas" width="800" height="800"></canvas>
+                        <canvas id="pv_cv" class="canvas" width="800" height="800" style="z-index:5"></canvas>
+                    </div>
+                    <div class="action-bar">
+                        <span class="icons"></span>
+                        <span class="controls">
+                        <span class="move-control" onclick="send_message('revert',100)">
+                            <i class="fa fa-fast-backward">❮❮❮</i>
+                        </span>
+                        <span class="move-control" onclick="send_message('revert',5)">
+                            <i class="fa fa-backward">❮❮</i>
+                        </span>
+                        <span class="move-control" onclick="send_message('revert',1)">
+                            <i class="fa fa-step-backward">❮</i>
+                        </span>
+                        <span class="move-control" onclick="send_message('forward',1)">
+                            <i class="fa fa-step-forward">❯</i>
+                        </span><span class="move-control" onclick="send_message('forward',5)">
+                            <i class="fa fa-forward">❯❯</i>
+                        </span><span class="move-control" onclick="send_message('forward',100)">
+                            <i class="fa fa-fast-forward">❯❯❯</i>
+                        </span></span></div>
+                   </cg-board>
+                </cg-container>
+             </cg-helper>
+          </div>
+       </div>
+       <div class="analyse__tools">
+          <section id="explorer-box" class="explorer-box sub-box">
+            
+          </section>
+          <div class="pair">
+                <label class="game_id_text">Game ID</label>
+                <input id="Game_ID" type="text" name="Game_ID" class="game_id_field"/>
+          </div>
+          <div class="pair">
+            <label class="engine_text">GTP Engine</label>
+            <input id="websocket" type="text" class="game_id_field"/>
+          </div>
+          <div class="pair">
+            <button onclick="location.href='http://yannikkeller.de'" class="glow-on-hover"><img src="http://yannikkeller.de/favicon.ico" width="25" height="25">Main page</button>
+            <button onclick="location.href='https://github.com/yannikkellerde/go_opening_explorer'" class="glow-on-hover"> <img src="https://github.com/favicon.ico" width="25" height="25"> Github</button>
+          </div>
+       </div>
+    </main>
+ </div> 
+<script>
+const explorer_html = `
+            <div class="data">
+                <div class="title"><span title="Go 9x9 Opening Explorer">Go 9x9 Opening Explorer</span></div>
+                <table class="moves">
+                   <thead>
+                      <tr>
+                         <th class="title">Move</th>
+                         <th class="title">Games</th>
+                         <th class="title" style="min-width:10vw">White / Black win %</th>
+                      </tr>
+                   </thead>
+                   <tbody id="move-table">
+                   </tbody>
+                </table>
+                <table class="games"><thead><tr><th class="title" colspan="4">Top games</th></tr></thead><tbody id="games_body"></tbody></table>
+            </div>
+            <span class="toconf" data-icon="⚙️" onmousedown="go_config_mode()"></span>
+`
+const config_html =  
+`
+            <div class="config">
+                <div class="title">Go 9x9 Opening Explorer</div>
+                <section class="db">
+                    <label>Player Strength</label>
+                    <div class="choices" id="select_0">
+                        <span id="kyu" onmousedown="select_setting(this,0,'kyu')">Kyu</span>
+                        <span id="dan" onmousedown="select_setting(this,0,'dan')">Dan</span>
+                    </div>
+                </section>
+                <div>
+                    <section class="rating">
+                        <label>Komi</label>
+                        <div class="choices" id="select_1">
+                            <span id="lower" onmousedown="select_setting(this,1,'lower')">&lt; 5.5</span>
+                            <span id="5.5" onmousedown="select_setting(this,1,'5.5')">5.5</span>
+                            <span id="higher" onmousedown="select_setting(this,1,'higher')">&gt; 5.5</span></div>
+                    </section>
+                    <section class="speed">
+                        <label>Rules</label>
+                        <div class="choices" id="select_2">
+                            <span id="Japanese" onmousedown="select_setting(this,2,'Japanese')">Japanese</span>
+                            <span id="Chinese" onmousedown="select_setting(this,2,'Chinese')">Chinese</span>
+                        </div>
+                    </section>
+                </div>
+                <section class="save"><button onclick="send_settings()" class="button button-green text" data-icon="✓">All set!</button></section>
+            </div>
+            <span class="toconf" data-icon="✖" onmousedown="send_settings()"></span>
+`
+
+const start = 100;
+const fin = 700;
+const move_off = (fin-start)/8;
+const stone_size = 74;
+var mode = "explorer";
+var movenum = 0;
+var settings_changed = false
+var settings = [['kyu','dan'],['lower','5.5','higher'],["Japanese","Chinese"]];
+var engine_socket = null;
+var engine_eval = null;
+var position = [[],[]];
+var onturn = null;
+var cur_pv = [];
+var cur_hover = null;
+for (var i = 0; i < 9;i++){
+    position[0].push(new Array(9).fill(false));
+    position[1].push(new Array(9).fill(false));
+}
+var waiting_for_server = false;
+var waiting_for_ogs = false;
+var sgf_cache = {};
+var stone_black = new Image(stone_size,stone_size);
+stone_black.src = "/go_static/images/black_stone.png";
+var stone_white = new Image(stone_size,stone_size);
+stone_white.src = "/go_static/images/white_stone.png";
+
+const board_canvas = document.getElementById("board_cv");
+const board_ctx = board_canvas.getContext("2d");
+const stone_canvas = document.getElementById("stone_cv");
+const stone_ctx = stone_canvas.getContext("2d");
+const eval_canvas = document.getElementById("eval_cv");
+const eval_ctx = eval_canvas.getContext("2d");
+const pv_canvas = document.getElementById("pv_cv");
+const pv_ctx = pv_canvas.getContext("2d");
+
+board_ctx.lineStyle = "#000000";
+board_ctx.fillStyle = "#333333";
+board_ctx.font = "bold 35px Arial";
+letters = ["A","B","C","D","E","F","G","H","J"]
+for (var i = 0; i < 9;i+=1){
+    pos = start+move_off*i
+    board_ctx.moveTo(pos, start);
+    board_ctx.lineTo(pos, fin);
+    board_ctx.moveTo(start, pos);
+    board_ctx.lineTo(fin, pos);
+    board_ctx.fillText(letters[i], pos-10, 50);
+    board_ctx.fillText(9-i, 30, pos+10);
+}
+board_ctx.stroke();
+dot_poses = [[2,2],[4,4],[6,2],[2,6],[6,6]]
+for (var i in dot_poses) {
+    dp = dot_poses[i]
+    board_ctx.fillStyle = "#000000";
+    board_ctx.beginPath();
+    board_ctx.arc(start+move_off*dp[0], start+move_off*dp[1], 5, 0, 2 * Math.PI);
+    board_ctx.closePath();
+    board_ctx.fill();
+}
+
+function sendchain(i,sends){
+    if (i>=sends.length){
+        return;
+    }
+    engine_socket.send(sends[i]);
+    setTimeout(function(){sendchain(i+1,sends);},100)
+}
+
+function websocket_handle_made_moves(made_moves){
+    console.log(made_moves)
+    if (engine_socket!==null){
+        var sends = []
+        for (var i=0; i<made_moves.length;i++){
+            color = made_moves[i][0]
+            move = made_moves[i][1];
+            if (color=="undo"){
+                for (var j=0; j<move;j++){
+                    sends.push("undo")
+                }
+            }
+            else if (color=="reset"){
+                sends.push("clear_board")
+            }
+            else{
+                sends.push("play "+color+" "+move)
+            }
+        }
+        sends.push("kata-analyze interval 300");
+        sendchain(0,sends)
+    }
+}
+
+function websocket_handler(e){
+    let message = e.data;
+    message = message.substring(2,message.length-1)
+
+    if (message.startsWith("info move")){
+        let moves = message.split("info ").slice(1,)
+        engine_eval = []
+
+        for (var i = 0; i < moves.length;i++){
+            let minfo_parts = moves[i].split(" ")
+            let meval = {}
+            meval["move"] = convert_machine_readable(minfo_parts[1])
+            meval["visits"] = parseInt(minfo_parts[3])
+            meval["winrate"] = parseFloat(minfo_parts[7])
+            meval["score_mean"] = parseFloat(minfo_parts[9])
+            meval["score_std"] = parseFloat(minfo_parts[11])
+            meval["pv"] = minfo_parts.slice(25).map(x=>convert_machine_readable(x))
+            engine_eval.push(meval)
+        }
+        show_engine_eval(engine_eval);
+        cur_hover=null;
+    }
+}
+
+document.getElementById("websocket").addEventListener("keydown",function(e){
+    if (e.keyCode==13){
+        var connection = new WebSocket('ws://'+document.getElementById("websocket").value, ['soap', 'xmpp']);
+        connection.onerror = function (error) {
+            console.log(error);
+        }
+        connection.onopen = function () {
+            engine_socket = connection
+            xml_http_post("/go",{"reset":true},handle_server_data)
+            engine_socket.onmessage = websocket_handler
+            engine_socket.onclose = function(){
+                console.log("connection closed")
+                engine_socket=null;
+            }
+        };
+    }
+})
+
+document.getElementById("Game_ID").addEventListener("keydown",function(e){
+    if (e.keyCode==13){
+        if (waiting_for_ogs){
+            return;
+        }
+        var request = new XMLHttpRequest();
+        gid = parseInt(document.getElementById("Game_ID").value)
+        if (gid in sgf_cache){
+            xml_http_post("/go",{"game_sgf":sgf_cache[gid]},handle_server_data)
+            return;
+        }
+        request.open("GET","https://online-go.com/api/v1/games/"+gid+"/sgf");
+        request.addEventListener('load', function(event) {
+        if (request.status >= 200 && request.status < 300) {
+            waiting_for_ogs=false;
+            sgf_cache[parseInt(document.getElementById("Game_ID").value)] = request.responseText;
+            xml_http_post("/go",{"game_sgf":request.responseText},handle_server_data)
+        } else {
+            waiting_for_ogs=false;
+            console.warn(request.statusText, request.responseText);
+        }
+        });
+        request.send();
+        waiting_for_ogs = true;
+    }
+})
+document.addEventListener("keydown",function(e){
+    if (e.keyCode==39){
+        send_message("forward",1)
+    }
+    else if (e.keyCode==37){
+        send_message("revert",1)
+    }
+})
+
+function go_config_mode(){
+    xml_http_post("/go",{"request":"settings"},handle_server_data)
+}
+
+function send_settings(){
+    mode = "explorer"
+    document.getElementById("explorer-box").innerHTML = explorer_html
+    xml_http_post("/go",(settings_changed?{"settings":settings}:{}),handle_server_data)
+}
+
+function show_selected_settings(settings){
+    for (var i = 0; i < settings.length;i++){
+        choices = document.getElementById("select_"+i).children
+        for (var j = 0; j < choices.length;j++){
+            choice = choices[j]
+            if (settings[i].includes(choice.id)){
+                choice.setAttribute("class","selected")
+            }
+            else{
+                choice.setAttribute("class","")
+            }
+        }
+    }
+}
+
+function select_setting(elem,layer,val){
+    var myindex = settings[layer].indexOf(val)
+    if (myindex>=0){
+        if (settings[layer].length==1){
+            return
+        }
+        elem.setAttribute("class", "");
+        settings[layer].splice(myindex,1)
+        settings_changed = true;
+    }
+    else{
+        settings[layer].push(val)
+        elem.setAttribute("class", "selected");
+        settings_changed = true;
+    }
+}
+
+function send_message(key,value){
+    out = {}
+    out[key] = value
+    xml_http_post("/go",out,handle_server_data)
+}
+
+function xml_http_post(url, data, callback) {
+    if (waiting_for_server){
+        return
+    }
+    const req = new XMLHttpRequest();
+    req.open("POST", url, true);
+    req.setRequestHeader("Content-Type", "application/json");
+    req.onreadystatechange = function() {
+        waiting_for_server=false
+        if (this.readyState == 4) {
+            callback(JSON.parse(this.responseText));
+        }
+    }
+    req.send(JSON.stringify(data));
+    waiting_for_server = true
+}
+
+function transform_into_position(old_pos,new_pos){
+    for (var row = 0; row < 9;row++){
+        for (var col = 0; col < 9;col++){
+            square = [row,col];
+            if (old_pos[0][row][col]){
+                if (!new_pos[0][row][col]){
+                    if (new_pos[1][row][col]){
+                        make_move(square,1)
+                    }
+                    else{
+                        remove_stone(square)
+                    }
+                }
+                continue
+            }
+            else if (old_pos[1][row][col]){
+                if (!new_pos[1][row][col]){
+                    if (new_pos[0][row][col]){
+                        make_move(square,0)
+                    }
+                    else{
+                        remove_stone(square)
+                    }
+                }
+                continue
+            }
+            if (new_pos[0][row][col]){
+                make_move(square,0)
+            }
+            else if (new_pos[1][row][col]){
+                make_move(square,1)
+            }
+        }
+    }
+}
+
+function handle_server_data(data){
+    if ("settings" in data){
+        settings = data["settings"];
+        mode = "config";
+        settings_changed = false;
+        document.getElementById("explorer-box").innerHTML = config_html;
+        show_selected_settings(settings);
+        return
+    }
+    if ("made_moves" in data){
+        websocket_handle_made_moves(data["made_moves"]);
+        eval_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+        pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+        engine_eval=null;
+        cur_pv = [];
+    }
+    if ("onturn" in data){
+        onturn = data["onturn"];
+    }
+    if ("movenum" in data){
+        movenum = data["movenum"];
+    }
+    show_top_games(data["pos_info"]["games_tuples"])
+    set_aval_moves(data["moves"])
+    transform_into_position(position,data["position"])
+    position = data["position"]
+}
+
+function show_top_games(game_infos){
+    var gb = document.getElementById("games_body");
+    gb.innerHTML = "";
+    for (var i = 0;i<game_infos.length;i++){
+        let gi = game_infos[i];
+        let tr = document.createElement("tr");
+        gb.appendChild(tr);
+        tr.setAttribute("onmousedown","window.open('"+gi[1]+"/"+movenum+"','_blank');")
+        let rating_td = document.createElement("td");
+        tr.appendChild(rating_td);
+        let brating = document.createElement("span");
+        rating_td.appendChild(brating);
+        brating.innerText = convert_rating_readable(gi[4]);
+        let wrating = document.createElement("span");
+        rating_td.appendChild(wrating);
+        wrating.innerText = convert_rating_readable(gi[5]);
+        let player_td = document.createElement("td");
+        tr.appendChild(player_td);
+        let pblack = document.createElement("span");
+        player_td.appendChild(pblack);
+        pblack.innerText = gi[2];
+        let pwhite = document.createElement("span");
+        player_td.appendChild(pwhite);
+        pwhite.innerText = gi[3];
+        let res_td = document.createElement("td");
+        tr.appendChild(res_td);
+        let res = document.createElement("result");
+        res_td.appendChild(res);
+        res.setAttribute("class",gi[6]=="B"?"black":"white");
+        res.innerText = gi[6]+"+";
+        let date_td = document.createElement("td");
+        tr.appendChild(date_td);
+        date_td.innerText = gi[7];
+    }
+}
+
+pv_canvas.addEventListener("mousedown",function(e){
+  var orig_width = parseInt(this.getAttribute("width"))
+  var rect = e.target.getBoundingClientRect();
+  var rescalo = orig_width/rect.width
+  var x = (e.clientX - rect.left)*rescalo-start;
+  var y = (e.clientY - rect.top)*rescalo-start;
+  var row = parseInt((x+move_off/2)/move_off);
+  var column = parseInt((y+move_off/2)/move_off);
+  if (row<0||row>8||column<0||column>8||position[0][row][column]||position[1][row][column]){
+    console.log("Failed stone placement")
+    return
+  }
+  xml_http_post("/go",{"move":[row,column]},handle_server_data)
+})
+
+pv_canvas.addEventListener("mousemove",function(e){
+    if (engine_eval!==null){
+        var orig_width = parseInt(this.getAttribute("width"))
+        var rect = e.target.getBoundingClientRect();
+        var rescalo = orig_width/rect.width
+        var x = (e.clientX - rect.left)*rescalo-start;
+        var y = (e.clientY - rect.top)*rescalo-start;
+        var row = parseInt((x+move_off/2)/move_off);
+        var column = parseInt((y+move_off/2)/move_off);
+        var did_sth = false;
+        for (var i = 0; i < engine_eval.length;i++){
+            if (engine_eval[i]["move"][0]==row&&engine_eval[i]["move"][1]==column){
+                if (cur_hover==null||(row!=cur_hover[0]||column!=cur_hover[1])){
+                    cur_hover = [row,column];
+                    show_pv(engine_eval[i]["pv"]);
+                }
+                did_sth = true;
+            }
+        }
+        if (!did_sth){
+            if (cur_hover!=null){
+                cur_hover=null;
+                cur_pv = [];
+                show_engine_eval(engine_eval);
+                pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+            }
+        }
+    }
+})
+
+function show_pv(pv){
+    cur_pv = pv;
+    show_engine_eval(engine_eval);
+    pv_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+    pv_ctx.font = "25px Arial";
+    pv_ctx.textBaseline = "middle"; 
+    pv_ctx.textAlign = "center";
+    var inner_onturn = onturn
+    for (var i = 0; i <pv.length;i++){
+        var move = pv[i]
+        var pos = [start+move_off*(move[0]), start+move_off*(move[1])]
+        pv_ctx.save();
+        pv_ctx.globalAlpha = 0.8;
+        if (inner_onturn){
+            pv_ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+        }
+        else{
+            pv_ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+        }
+        pv_ctx.fillStyle = inner_onturn?"black":"white";
+        pv_ctx.fillText(i+1,pos[0],pos[1]);
+        pv_ctx.restore();
+        eval_ctx.clearRect(pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size);
+        inner_onturn = !inner_onturn;
+    }
+}
+
+function convert_human_readable(move){
+    if (move.length==0){
+        return "pass"
+    }
+    move_letters = "ABCDEFGHJ"
+    return move_letters[move[0]]+(9-move[1])
+}
+
+function convert_machine_readable(move_str){
+    move_letters = "ABCDEFGHJ"
+    if (move_str == "pass"){
+        return []
+    }
+    return [move_letters.indexOf(move_str[0]),9-parseInt(move_str[1])]
+}
+
+function convert_rating_readable(rating){
+    if (rating<0){
+        return (-Math.round(rating*100)/100)+" kyu"
+    }
+    else{
+        return (Math.round(rating*100)/100)+" dan"
+    }
+}
+
+function set_aval_moves(moves){
+    if (mode!="explorer"){
+        return
+    }
+    var tbody = document.getElementById("move-table");
+    tbody.innerHTML = ""
+    for (var i = 0; i < moves.length;i++){
+        let move_info = moves[i];
+        let game_amount = move_info["black_wins"]+move_info["white_wins"]
+        let white_percent = Math.round((move_info["white_wins"]/game_amount)*1000)/10
+        let black_percent = Math.round((move_info["black_wins"]/game_amount)*1000-0.0001)/10
+        let row = document.createElement("tr");
+        row.setAttribute("title","Average rating: "+convert_rating_readable(move_info["rating"]))
+        if (move_info["move"].length>0){
+            row.setAttribute("data-uci",convert_human_readable(move_info["move"]))
+        }
+        else{
+            row.setAttribute("data-uci","pass")
+        }
+        row.addEventListener("mousedown",function(e){
+            xml_http_post("/go",{"move":convert_machine_readable(this.getAttribute("data-uci"))},handle_server_data)
+        })
+        tbody.appendChild(row)
+        let move_td = document.createElement("td")
+        move_td.innerText = convert_human_readable(move_info["move"])
+        row.appendChild(move_td)
+        let games_td = document.createElement("td")
+        games_td.innerText = game_amount
+        row.appendChild(games_td)
+        let bar_td = document.createElement("td")
+        row.appendChild(bar_td)
+        let bar_div = document.createElement("div")
+        bar_div.setAttribute("class","bar")
+        bar_td.appendChild(bar_div)
+        let white_span = document.createElement("span")
+        white_span.setAttribute("class","white")
+        white_span.setAttribute("style","width: "+Math.min(white_percent,99)+"%")
+        white_span.innerText = Math.round(white_percent)+"%"
+        let black_span = document.createElement("span")
+        black_span.setAttribute("class","black")
+        black_span.setAttribute("style","width: "+Math.min(black_percent,99)+"%")
+        black_span.innerText = Math.round(black_percent)+"%"
+        bar_div.appendChild(white_span)
+        bar_div.appendChild(black_span)
+    }
+}
+
+function show_engine_eval(eval_arr){
+    eval_ctx.clearRect(0, 0, eval_canvas.width, eval_canvas.height);
+    var best_visits = eval_arr[0]["visits"]
+    var greens = 4
+    if (eval_arr.length>1){
+        var greenstart = eval_arr[1]["visits"]
+        var greenlast = eval_arr[Math.min(eval_arr.length-1,greens)]["visits"]
+        var greenmove = greenstart>greenlast?(1/(greenstart-greenlast))*0.3:0
+    }
+    if (eval_arr.length>greens+1){
+        var redstart = eval_arr[greens+1]["visits"]
+        var redlast = eval_arr[eval_arr.length-1]["visits"]
+        var redmove = redstart>redlast?(1/(redstart-redlast))*0.4:0
+    }
+    for (var i = 0; i < eval_arr.length;i++){
+        let meval = eval_arr[i]
+        cont = false;
+        for (var j = 0; j < cur_pv.length;j++){
+            if (meval["move"][0]==cur_pv[j][0]&&meval["move"][1]==cur_pv[j][1]){
+                cont = true;
+                break;
+            }
+        }
+        if (cont){
+            continue;
+        }
+        let pos = [start+move_off*meval["move"][0],start+move_off*meval["move"][1]]
+        if (i==0){var color = "rgba(66, 155, 245, 0.8)"}
+        else if (i<=greens){var color = "rgba(66, 245, 90, "+(0.8+(meval.visits-greenstart)*greenmove)+")"}
+        else {var color = "rgb(181, 43, 43,"+(0.5+(meval.visits-redstart)*redmove)+")"}
+        eval_ctx.beginPath();
+        eval_ctx.arc(pos[0],pos[1], stone_size/2, 0, 2 * Math.PI);
+        eval_ctx.fillStyle = color;
+        eval_ctx.fill();
+        eval_ctx.strokeStyle = onturn?"#000":"#fff";
+        eval_ctx.stroke();
+        if (i<5){
+            eval_ctx.font = "25px Arial";
+            eval_ctx.fillStyle = "black";
+            eval_ctx.textAlign = "center"; 
+            eval_ctx.textBaseline = "middle"; 
+            eval_ctx.fillText((Math.round(meval.winrate*1000)/10)+"", pos[0], pos[1]);
+        }
+    }
+}
+
+function make_move(move,color){
+    pos = [start+move_off*(move[0]), start+move_off*(move[1])]
+    if (color){
+        stone_ctx.drawImage(stone_white,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+    }
+    else{
+        stone_ctx.drawImage(stone_black,pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+    }
+    position[color][move[0]][move[1]] = true
+}
+function remove_stone(square){
+    pos = [start+move_off*(square[0]), start+move_off*(square[1])]
+    stone_ctx.clearRect(pos[0]-stone_size/2,pos[1]-stone_size/2,stone_size,stone_size)
+}
+
+function setCookie(name,value,days) {
+    var expires = "";
+    if (days) {
+        var date = new Date();
+        date.setTime(date.getTime() + (days*24*60*60*1000));
+        expires = "; expires=" + date.toUTCString();
+    }
+    document.cookie = name + "=" + (value || "")  + expires + "; path=/;SameSite=Strict";
+}
+function getCookie(name) {
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i=0;i < ca.length;i++) {
+        var c = ca[i];
+        while (c.charAt(0)==' ') c = c.substring(1,c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+    }
+    return null;
+}
+function eraseCookie(name) {   
+    document.cookie = name +'=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+}
+
+var first_data_from_server = true;
+xml_http_post("/go",{},handle_server_data)
+document.getElementById("explorer-box").innerHTML = explorer_html
+</script>
+</body>

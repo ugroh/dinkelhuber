@@ -1,5 +1,6 @@
 import numpy as np
 from copy import deepcopy
+import json
 
 class Rotater():
     def __init__(self,size):
@@ -32,14 +33,31 @@ class Rotater():
             newp1 = self.apply_symetry(pos[1],sym)
             all_pos.append([newp0,newp1])
         return all_pos
+
+rotater = Rotater(9)
+
 class Go_game():
-    def __init__(self,rotater:Rotater,zobrist,size=9):
+    def __init__(self,zobrist,size=9):
         self.size = size
         self.rotater = rotater
         self.zobrist = zobrist
         self.reset()
         self.hash = self.do_hash()
         self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash,None)]
+        
+    def get_dump_list(self):
+        return [[x.tolist() for x in self.position],self.hash,self.onturn,
+                [([x[0][0].tolist(),x[0][1].tolist()],x[1],x[2],x[3]) for x in self.history]]
+
+    @staticmethod
+    def from_dump(dump,zobrist):
+        g = Go_game(zobrist)
+        g.position, g.hash, g.onturn, g.history = json.loads(dump)
+        g.position = [np.asarray(x) for x in g.position]
+        for h in g.history:
+            h[0] = [np.asarray(x) for x in h[0]]
+        return g
+
     def reset(self):
         self.position = [np.zeros((self.size,self.size),dtype=bool),np.zeros((self.size,self.size),dtype=bool)]
         self.onturn = False

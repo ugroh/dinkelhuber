@@ -35,7 +35,7 @@ class Stuff_handler():
         if uri=="/":
             uri = "/html/go.html"
         elif uri.startswith("/qango"):
-            return self.qango_handler(uri,query)
+            return self.qango_handler.handle_get(uri,query)
         path = os.path.join(go_path,uri[1:])
         try:
             if not path_is_parent(go_path,path):

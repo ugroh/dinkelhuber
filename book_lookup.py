@@ -3,9 +3,10 @@ from sqlitedict import SqliteDict
 import time
 import os,sys
 basepath = os.path.abspath(os.path.dirname(__file__))
-
 class Book_lookupper():
     def __init__(self):
+        self.books = None
+    def set_books(self):
         self.books = {
             "dan":{
                 "lower":{
