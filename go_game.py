@@ -46,13 +46,13 @@ class Go_game():
         self.history = [([self.position[0].copy(),self.position[1].copy()],self.onturn,self.hash,None)]
         
     def get_dump_list(self):
-        return [[x.tolist() for x in self.position],self.hash,self.onturn,
+        return [[x.tolist() for x in self.position],self.hash,self.onturn,self.hist_index,
                 [([x[0][0].tolist(),x[0][1].tolist()],x[1],x[2],x[3]) for x in self.history]]
 
     @staticmethod
     def from_dump(dump,zobrist):
         g = Go_game(zobrist)
-        g.position, g.hash, g.onturn, g.history = json.loads(dump)
+        g.position, g.hash, g.onturn, g.hist_index, g.history = json.loads(dump)
         g.position = [np.asarray(x) for x in g.position]
         for h in g.history:
             h[0] = [np.asarray(x) for x in h[0]]

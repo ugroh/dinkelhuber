@@ -4,10 +4,10 @@ from go_game import Go_game,Rotater
 import numpy as np
 from create_book import extract_val,convert_move_to_num
 
-def load_sgf(sgf):
+def load_sgf(sgf,zobrist):
     def extract_val(line):
         return line.split("[")[1].split("]")[0]
-    game = Go_game(Rotater(9),np.load("binfiles/zobrist.npy"))
+    game = Go_game(Rotater(9),zobrist)
     for line in sgf.splitlines():
         if line.startswith(";B") or line.startswith("(;B") or line.startswith(";W") or line.startswith("(;W") or line.startswith("AB"):
             extract_val(line)

@@ -49,6 +49,7 @@ class Go_handler():
             db.session.add(user)
         else:
             game = Go_game.from_dump(user.game,self.zobrist)
+            print(game.history)
             setting = json.loads(user.settings)
             user.last_access = int(time.time())
         lookup_api = Lookup_api(setting,self.book_handler)
@@ -59,7 +60,7 @@ class Go_handler():
         else:
             return_data = {}
             if "game_sgf" in data:
-                new_game = load_sgf(data["game_sgf"])
+                new_game = load_sgf(data["game_sgf"],self.zobrist)
                 game,made_moves = sync_to_equal_move(game,new_game)
                 return_data["made_moves"] = [["reset",True]]+game.convert_gtp_readable(made_moves)
             elif "reset" in data:
