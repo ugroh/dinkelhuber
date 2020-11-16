@@ -49,7 +49,6 @@ class Go_handler():
             db.session.add(user)
         else:
             game = Go_game.from_dump(user.game,self.zobrist)
-            print(game.history)
             setting = json.loads(user.settings)
             user.last_access = int(time.time())
         lookup_api = Lookup_api(setting,self.book_handler)
