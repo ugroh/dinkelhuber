@@ -12,3 +12,4 @@ visits.txt
 *.log
 *.db
 *.zip
+.DS_Store
