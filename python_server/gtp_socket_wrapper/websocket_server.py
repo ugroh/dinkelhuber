@@ -6,13 +6,14 @@ import time
 import socket
 from websock.WebSocketServer import WebSocketServer
 
-p = pexpect.spawn('./katago/katago gtp')
+p = pexpect.spawn('katago gtp')
 p.expect("GTP ready.*")
 p.sendline("boardsize 9")
 p.expect("=.*")
 p.sendline("komi 5.5")
 p.expect("=.*")
-p.timeout = 1e4
+# p.timeout = 1e4
+p.expect(pexpect.EOF, timeout=None)
 
 t = None
 
